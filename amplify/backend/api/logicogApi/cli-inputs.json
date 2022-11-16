@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/customers": {
+      "name": "/customers",
+      "lambdaFunction": "logicogCustomerHandler",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/products": {
+      "name": "/products",
+      "lambdaFunction": "logicogProductHandler",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
