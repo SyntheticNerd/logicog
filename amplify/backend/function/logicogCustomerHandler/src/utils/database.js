@@ -1,19 +1,18 @@
-const mongodb = require("mongodb");
-
-const MongoClient = mongodb.MongoClient;
+const mongoose = require("mongoose");
 
 let _db;
 
 const mongoConnect = async () => {
-  const client = await MongoClient.connect(
+  const client = await mongoose.connect(
     `mongodb+srv://admin:${process.env.MONGO_PW}@cluster0.nws27lc.mongodb.net/customers?retryWrites=true&w=majority`
   );
   console.log("Connecting to MongoDB");
+  console.log("CLIENT", client)
   if (!client) {
     console.log("No client");
     throw new Error("Not connecting to client");
   }
-  _db = client.db();
+  // _db = client.db();
 };
 
 const getDB = () => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Eyeball from "../../../images/icons/Eyeball";
-import { CollapsibleInput } from "./SignUpStyled";
+import { CollapsibleInput } from "./InputStyled";
 
 interface PwError {
   length?: boolean;
@@ -27,7 +27,7 @@ const StdInput = ({ onChange, error, label, value, type }: Props) => {
   const [showPw, setShowPw] = useState(false);
 
   return (
-    <CollapsibleInput collapse={!focus && !(value.length > 1)}>
+    <CollapsibleInput collapse={!focus && !(value.length > 0)}>
       <div>
         <label htmlFor={label}>{label}</label>
         <input

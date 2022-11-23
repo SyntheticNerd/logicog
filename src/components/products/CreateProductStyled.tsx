@@ -1,5 +1,5 @@
 import styled from "styled-components";
-export const SignUpStyled = styled.div`
+export const CreateProductStyled = styled.div`
   background-color: black;
   min-height: 100vh;
   color: white;

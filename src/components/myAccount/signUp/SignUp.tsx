@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../../images/Logo";
+import { createCustomer } from "../../../utils/apiHelpers";
 import { validatePw, validateEmail } from "../../../utils/validation";
 import { SignUpStyled } from "./SignUpStyled";
-import StdInput from "./StdInput";
+import StdInput from "../../common/input/StdInput";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -48,13 +49,10 @@ const SignUp = () => {
     number: false,
     symbol: false,
   });
-
   const pwHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPwError(validatePw(e.target.value));
     setPassword(e.target.value);
   };
-
-  const [confirmError, setConfirmError] = useState(false);
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -68,28 +66,9 @@ const SignUp = () => {
     ) {
       return;
     }
-
-    fetch(
-      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: first,
-          lastName: last,
-          email: email,
-          password: password,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        navigate("/my-account");
-      })
-      .catch((err) => console.log(err));
+    createCustomer(first, last, email, password).then(() => {
+      navigate("/my-account");
+    });
   };
 
   return (
@@ -125,7 +104,7 @@ const SignUp = () => {
         />
         <button>Create</button>
       </form>
-      <Link to='/sign-in'>HAVE AN ACCOUNT LOGIN</Link>
+      <Link to='/login'>HAVE AN ACCOUNT LOGIN</Link>
     </SignUpStyled>
   );
 };

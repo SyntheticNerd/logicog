@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
 const { getDB } = require("./utils/database");
+const Product = require("./models/product");
 
 // declare a new express app
 const app = express();
@@ -46,9 +47,17 @@ app.get("/products/*", function (req, res) {
  * Example post method *
  ****************************/
 
-app.post("/products", function (req, res) {
+app.post("/products", async function (req, res) {
   // Add your code here
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
+  const { title, price, description, imageUrl } = req.body;
+  const product = new Product({ title, price, description, imageUrl });
+  let status = await product.save();
+  res.json({
+    success: "post call succeed!",
+    url: req.url,
+    body: req.body,
+    status: status,
+  });
 });
 
 app.post("/products/*", function (req, res) {

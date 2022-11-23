@@ -26,6 +26,8 @@ const TopBar = () => {
           <Link to='my-account' className='icon-container'>
             <AccountIcon /> MY ACCOUNT
           </Link>
+          <hr />
+          <Link to='create-product'>Create Product</Link>
         </div>
       </div>
     </TopBarStyled>
