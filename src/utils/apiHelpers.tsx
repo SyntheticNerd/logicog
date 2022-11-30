@@ -53,12 +53,57 @@ export const loginCustomer = async (email: string, password: string) => {
   }
 };
 
+interface ImageObj {
+  url: string;
+  color: string;
+  primary: boolean;
+}
+
+interface Style {
+  title: string;
+  images: string[];
+  color: string;
+  quantity: number;
+}
+
 export const createProduct = async (
   title: string,
-  price: number,
+  price: string,
   description: string,
-  imageUrl: string
+  category: string,
+  styles: Style[],
+  powerDelivery: string,
+  weight: string,
+  height: string,
+  width: string,
+  depth: string,
+  warranty: string,
+  primarySpecs: string[],
+  technicalSpecs: string[],
+  tracking: string[],
+  requirements: string[],
+  platforms: string[],
+  inBox: string[]
 ) => {
+  console.log({
+    title,
+    price,
+    description,
+    category,
+    styles,
+    powerDelivery,
+    weight,
+    height,
+    width,
+    depth,
+    warranty,
+    primarySpecs,
+    technicalSpecs,
+    tracking,
+    requirements,
+    platforms,
+    inBox,
+  });
   try {
     let response = await fetch(
       "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/products",
@@ -71,14 +116,36 @@ export const createProduct = async (
           title,
           price,
           description,
-          imageUrl,
+          category,
+          styles,
+          powerDelivery,
+          weight,
+          height,
+          width,
+          depth,
+          warranty,
+          primarySpecs,
+          technicalSpecs,
+          tracking,
+          requirements,
+          platforms,
+          inBox,
         }),
       }
     );
 
     let data = await response.json();
     console.log(data);
+    return data;
   } catch (err) {
     console.log(err);
   }
+};
+
+export const getAllProducts = async () => {
+  const res = await fetch(
+    "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/products"
+  );
+  const data = await res.json();
+  return data;
 };

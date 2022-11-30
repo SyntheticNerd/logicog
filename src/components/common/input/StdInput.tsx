@@ -27,7 +27,9 @@ const StdInput = ({ onChange, error, label, value, type }: Props) => {
   const [showPw, setShowPw] = useState(false);
 
   return (
-    <CollapsibleInput collapse={!focus && !(value.length > 0)}>
+    <CollapsibleInput
+      collapse={!focus && !(value.length > 0) && !(type === "file")}
+    >
       <div>
         <label htmlFor={label}>{label}</label>
         <input

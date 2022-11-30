@@ -34,6 +34,27 @@ export const CreateProductStyled = styled.div`
     font-weight: bold;
     margin-top: 20px;
   }
+  .styleContainer {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 32px;
+    border-radius: 10px;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+  .previewImg{
+    height: 80px;
+    width: 80px;
+  }
+  .imgDeleteBox{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
+    width: fit-content;
+  }
+  .imgSelections{
+    display: flex;
+  }
 `;
-
-

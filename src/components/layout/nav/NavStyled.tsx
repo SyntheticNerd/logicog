@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const NavStyled = styled.nav`
+  width: 100%;
+  max-width: 1280px;
   height: 80px;
   position: sticky;
   position: relative;
@@ -9,7 +11,6 @@ export const NavStyled = styled.nav`
   padding: 16px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 80%;
   margin: auto;
   margin-bottom: -84px;
 

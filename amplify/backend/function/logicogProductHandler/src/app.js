@@ -10,13 +10,46 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
+// const multer = require("multer");
+// const cloudinary = require("cloudinary").v2;
+// const fs = require("fs");
+
 const { getDB } = require("./utils/database");
 const Product = require("./models/product");
+
+// Create uploads folder if not already present
+// In "uploads" folder we will temporarily upload
+// image before uploading to cloudinary
+// if (!fs.existsSync("./uploads")) {
+//   fs.mkdirSync("./uploads");
+// }
+
+// // Multer setup
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+
+// const upload = multer({ storage: storage });
 
 // declare a new express app
 const app = express();
 app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(awsServerlessExpressMiddleware.eventContext());
+
+// app.use(express.static(__dirname + "/public"));
+// app.use("/uploads", express.static("uploads"));
+
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_NAME,
+//   api_key: process.env.CLOUDINARY_KEY,
+//   api_secret: process.env.CLOUDINARY_SECRET,
+// });
 
 // Enable CORS for all methods
 app.use(function (req, res, next) {
@@ -30,12 +63,7 @@ app.use(function (req, res, next) {
  **********************/
 
 app.get("/products", async function (req, res) {
-  let db = getDB();
-  res.json({
-    success: "get call succeed!",
-    url: req.url,
-    db: await db.collection("products").find().toArray(),
-  });
+  Product.find().then((products) => res.json(products));
 });
 
 app.get("/products/*", function (req, res) {
@@ -48,16 +76,25 @@ app.get("/products/*", function (req, res) {
  ****************************/
 
 app.post("/products", async function (req, res) {
-  // Add your code here
-  const { title, price, description, imageUrl } = req.body;
-  const product = new Product({ title, price, description, imageUrl });
-  let status = await product.save();
-  res.json({
-    success: "post call succeed!",
-    url: req.url,
-    body: req.body,
-    status: status,
-  });
+  console.log("Creating product");
+  console.log(req.body);
+
+  const product = new Product(req.body);
+  console.log("PRODUCT", product);
+  try {
+    let status = await product.save();
+    res.json({
+      success: "post call succeed!",
+      url: req.url,
+      body: req.body,
+      status: status,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      error: "Failed to saver",
+    });
+  }
 });
 
 app.post("/products/*", function (req, res) {

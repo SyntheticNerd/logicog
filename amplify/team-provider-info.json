@@ -19,7 +19,7 @@
         },
         "logicogProductHandler": {
           "deploymentBucketName": "amplify-logicog-dev-150506-deployment",
-          "s3Key": "amplify-builds/logicogProductHandler-2f516664566e6b576356-build.zip"
+          "s3Key": "amplify-builds/logicogProductHandler-4250745a66784e65786c-build.zip"
         }
       },
       "api": {
