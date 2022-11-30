@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 
 const Customer = require("./models/customer");
+const { runInNewContext } = require("vm");
 
 // declare a new express app
 const app = express();
@@ -37,22 +38,24 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  if (!req.session.user) {
+  const ssid = req.body.ssid;
+  console.log("SSID", ssid);
+  store.get(ssid, (error, session) => {
+    console.log("ERROR", error);
+    console.log("SESSION", session);
+  });
+  if (!req.session.customer) {
     console.log("No Session Found");
     return next();
   }
-  console.log(req.session.user);
-  Customer.findById(req.session.customers._id)
+  console.log(req.session.customer);
+  Customer.findById(req.session.customer._id)
     .then((customer) => {
       req.customer = customer;
       next();
     })
     .catch((err) => console.log(err));
 });
-
-/**********************
- * Example get method *
- **********************/
 
 app.get("/customers", async function (req, res) {
   // Add your code here
@@ -116,7 +119,13 @@ app.post("/customers/login", async function (req, res) {
       req.session.save((err) => {
         console.log(err);
       });
-      res.json({ success: match, session: req.session });
+      res.setHeader("Set-Cookie", "loggedIn=true");
+      res.json({
+        success: match,
+        session: req.session,
+        idOne: req.session.id,
+        idTwo: req.sessionID,
+      });
     } else {
       res.json({ success: false, message: "Incorrect password." });
     }
@@ -126,45 +135,27 @@ app.post("/customers/login", async function (req, res) {
   }
 });
 
-app.post("/customers/*", function (req, res) {
+app.post("/customers/add-to-cart", async function (req, res) {
   // Add your code here
-
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
+  const prodId = req.body.productId;
+  console.log("CUSTOMER", req.customer);
+  console.log("SESSION", req.session);
+  try {
+    const res = await req.session.customer.addToCart(prodId);
+    console.log("Past addToCart", res);
+    res.json({
+      success: "Added item to cart",
+      productId: prodId,
+      response: res,
+    });
+  } catch (err) {
+    console.log("Error", err);
+    res.json({ error: "Could not add to cart." });
+  }
 });
 
-/****************************
- * Example put method *
- ****************************/
-
-app.put("/customers", function (req, res) {
-  // Add your code here
-  res.json({ success: "put call succeed!", url: req.url, body: req.body });
-});
-
-app.put("/customers/*", function (req, res) {
-  // Add your code here
-  res.json({ success: "put call succeed!", url: req.url, body: req.body });
-});
-
-/****************************
- * Example delete method *
- ****************************/
-
-app.delete("/customers", function (req, res) {
-  // Add your code here
-  res.json({ success: "delete call succeed!", url: req.url });
-});
-
-app.delete("/customers/*", function (req, res) {
-  // Add your code here
-  res.json({ success: "delete call succeed!", url: req.url });
-});
 
 app.listen(3000, function () {
   console.log("App starting");
 });
-
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
 module.exports = app;

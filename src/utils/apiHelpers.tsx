@@ -40,6 +40,7 @@ export const loginCustomer = async (email: string, password: string) => {
         body: JSON.stringify({
           email: email,
           password: password,
+          ssid: localStorage.getItem("ssid"),
         }),
       }
     );
@@ -148,4 +149,28 @@ export const getAllProducts = async () => {
   );
   const data = await res.json();
   return data;
+};
+
+export const addProductToCart = async (prodId: any) => {
+  const ssid = localStorage.getItem("ssid");
+  if (ssid) {
+    const res = await fetch(
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/add-to-cart",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ssid: ssid,
+          productId: prodId,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } else {
+    console.log("Store cart in redux until user creates account");
+  }
 };

@@ -6,6 +6,7 @@ export interface Style {
 }
 
 export interface Product {
+  _id: any;
   title: string;
   price: string;
   description: string;

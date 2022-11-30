@@ -88,7 +88,7 @@ const ProductControlBoard = ({ products }: Props) => {
                   {section.list.map((filter) => (
                     <li>
                       <input type='checkbox' name={filter} id={filter} />
-                      {filter}
+                      <label htmlFor={filter}>{filter}</label>
                     </li>
                   ))}
                 </ul>

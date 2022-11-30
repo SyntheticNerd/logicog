@@ -37,6 +37,7 @@ const LogIn = () => {
     event.preventDefault();
     loginCustomer(email, password).then((res) => {
       console.log(res);
+      localStorage.setItem("ssid", res.idOne);
       navigate("/my-account");
     });
     // createUser( email, password).then(() => {

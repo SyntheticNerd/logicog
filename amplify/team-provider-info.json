@@ -15,7 +15,7 @@
       "function": {
         "logicogCustomerHandler": {
           "deploymentBucketName": "amplify-logicog-dev-150506-deployment",
-          "s3Key": "amplify-builds/logicogCustomerHandler-2f33686b2f672b327134-build.zip"
+          "s3Key": "amplify-builds/logicogCustomerHandler-4e685244596b2b4f4462-build.zip"
         },
         "logicogProductHandler": {
           "deploymentBucketName": "amplify-logicog-dev-150506-deployment",

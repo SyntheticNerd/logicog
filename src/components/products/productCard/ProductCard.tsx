@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Product } from "../../../utils/types";
 import { ProductCardStyled } from "./ProductCardStyled";
 import { ReactComponent as CartIcon } from "../../../images/icons/cart.svg"; 
+import { addProductToCart } from "../../../utils/apiHelpers";
 
 interface Props {
   product: Product;
@@ -41,7 +42,7 @@ const ProductCard = ({ product }: Props) => {
           )}
           <b>${product.price}</b>
           {product.styles[style].quantity > 0 ? (
-            <button><CartIcon /> ADD TO CART</button>
+            <button onClick={()=>addProductToCart(product._id)}><CartIcon /> ADD TO CART</button>
           ) : (
             <h3>SOLD OUT TEMPORARILY</h3>
           )}
