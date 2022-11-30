@@ -3,7 +3,7 @@ import bannerImage from "../../../images/banners/plp-mice-hero-desktop-2.webp";
 
 export const GMBannerStyled = styled.div`
   height: 55vh;
-  background-color: blue;
+  background-color: #2A2A2A;
   background-image: url(${bannerImage});
   background-size: cover;
   background-position: center;
