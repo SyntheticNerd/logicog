@@ -9,7 +9,6 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 
 const Customer = require("./models/customer");
-const { runInNewContext } = require("vm");
 
 // declare a new express app
 const app = express();
@@ -28,33 +27,59 @@ app.use(function (req, res, next) {
   next();
 });
 
+const expirationTime = 1000 * 60 * 30;
+
 app.use(
   session({
     secret: "my secret",
     resave: false,
     saveUninitialized: false,
     store: store,
+    // expires: new Date(Date.now() + expirationTime),
+    cookie: {
+      //expires after 30 minutes
+      expires: new Date(Date.now() + expirationTime),
+    },
   })
 );
 
-app.use((req, res, next) => {
-  const ssid = req.body.ssid;
-  console.log("SSID", ssid);
-  store.get(ssid, (error, session) => {
-    console.log("ERROR", error);
-    console.log("SESSION", session);
-  });
-  if (!req.session.customer) {
-    console.log("No Session Found");
+app.use(async (req, res, next) => {
+  const sid = req.body.sid;
+  console.log("SID", sid);
+  if (sid !== undefined && sid) {
+    //TODO check if session has expired
+    store.get(sid, (error, session) => {
+      console.log("ERROR", error);
+      console.log("SESSION", session);
+      console.log("EXPIRES", session.cookie.expires);
+      if (!session || session === undefined) {
+        console.log("No Session Found");
+        return next();
+      } else {
+        //! Can not set the entire session all at once gives touch method error
+        req.session.customer = session.customer;
+        req.session.cookie = session.cookie;
+        //does not work
+        // req.session.id = sid;
+        console.log("IDS", req.sessionID, req.session.id);
+        //TODO convert to try catch
+        //? not entirely sure why i am doing this anymore
+        //? is it so the schema works right
+        Customer.findById(req.session.customer._id)
+          .then((customer) => {
+            req.customer = customer;
+            return next();
+          })
+          .catch((err) => {
+            console.log(err);
+            //? should i actually return next here
+            return next();
+          });
+      }
+    });
+  } else {
     return next();
   }
-  console.log(req.session.customer);
-  Customer.findById(req.session.customer._id)
-    .then((customer) => {
-      req.customer = customer;
-      next();
-    })
-    .catch((err) => console.log(err));
 });
 
 app.get("/customers", async function (req, res) {
@@ -66,12 +91,16 @@ app.get("/customers", async function (req, res) {
   });
 });
 
-app.get("/customers/:customerId", function (req, res) {
+app.post("/customers/current", function (req, res) {
   // Add your code here
-  res.json({
-    success: `${req.params.customerId} is being accessed`,
-    url: req.url,
-  });
+  console.log("THIS IS RUNNING")
+  if (req.customer) {
+    res.json({
+      customer: req.customer,
+    });
+  } else {
+    res.json({ message: "No customer logged In" });
+  }
 });
 
 app.get("/customers/*", function (req, res) {
@@ -104,27 +133,31 @@ app.post("/customers/sign-up", async function (req, res) {
 
 app.post("/customers/login", async function (req, res) {
   const { email, password } = req.body;
+  //find the customer
   const customer = await Customer.findOne({ email });
   if (!customer) {
+    console.log("No customer found");
     return res.json({ error: "No Customer found" });
   }
-  console.log(customer);
+  console.log("FOUND CUSTOMER", customer);
   try {
+    //test password
     const match = await bcrypt.compare(password, customer.password);
-    console.log(match);
     if (match) {
       //logged in
-      req.session.isLoggedIn = true;
+      //generate session info
+      // req.session.isLoggedIn = true;
       req.session.customer = customer;
+      //save session
       req.session.save((err) => {
         console.log(err);
       });
-      res.setHeader("Set-Cookie", "loggedIn=true");
+      //TODO encrypt session id maybe, should be the only thing exposed to front end
       res.json({
         success: match,
         session: req.session,
-        idOne: req.session.id,
-        idTwo: req.sessionID,
+        sid: req.session.id,
+        expires: req.session.cookie.expires,
       });
     } else {
       res.json({ success: false, message: "Incorrect password." });
@@ -136,24 +169,32 @@ app.post("/customers/login", async function (req, res) {
 });
 
 app.post("/customers/add-to-cart", async function (req, res) {
-  // Add your code here
+  //I wish i could verrify that the product exists but I dont have access to the Product
+  //schema should have done everything under one lambda function
+  //TODO move everything to one lambda function
   const prodId = req.body.productId;
+  //at this point pray we have proper session data
   console.log("CUSTOMER", req.customer);
   console.log("SESSION", req.session);
+  //have to return or else we get a unhandled promise rejection
+
   try {
-    const res = await req.session.customer.addToCart(prodId);
+    const response = await req.customer.addToCart(prodId);
     console.log("Past addToCart", res);
-    res.json({
+    req.session.customer = req.customer;
+    store.set(req.body.sid, req.session);
+    req.session.destroy();
+    return res.json({
       success: "Added item to cart",
       productId: prodId,
-      response: res,
+      response: response,
+      customer: req.customer,
     });
   } catch (err) {
     console.log("Error", err);
-    res.json({ error: "Could not add to cart." });
+    return res.json({ error: "Could not add to cart." });
   }
 });
-
 
 app.listen(3000, function () {
   console.log("App starting");

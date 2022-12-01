@@ -40,25 +40,17 @@ export const loginCustomer = async (email: string, password: string) => {
         body: JSON.stringify({
           email: email,
           password: password,
-          ssid: localStorage.getItem("ssid"),
         }),
       }
     );
-
     let data = await response.json();
+    localStorage.setItem("sid", data.sid);
     console.log(data);
-
     return data;
   } catch (err) {
     console.log(err);
   }
 };
-
-interface ImageObj {
-  url: string;
-  color: string;
-  primary: boolean;
-}
 
 interface Style {
   title: string;
@@ -152,8 +144,8 @@ export const getAllProducts = async () => {
 };
 
 export const addProductToCart = async (prodId: any) => {
-  const ssid = localStorage.getItem("ssid");
-  if (ssid) {
+  const sid = localStorage.getItem("sid");
+  if (sid) {
     const res = await fetch(
       "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/add-to-cart",
       {
@@ -162,7 +154,7 @@ export const addProductToCart = async (prodId: any) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ssid: ssid,
+          sid: sid,
           productId: prodId,
         }),
       }

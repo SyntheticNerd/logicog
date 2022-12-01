@@ -53,6 +53,7 @@ customerSchema.methods.addToCart = function(productId) {
     items: updatedCartItems,
   };
   this.cart = updatedCart;
+  console.log("UPDATED CART", this.cart);
   return this.save();
 };
 

@@ -23,10 +23,12 @@ const Footer = () => {
   return (
     <footer>
       <div>
-        {footerItems.map((list) => (
-          <div>
+        {footerItems.map((list, i) => (
+          <div key={i}>
             {list.map((item) => (
-              <a href='#'>{item}</a>
+              <a key={item} href='#'>
+                {item}
+              </a>
             ))}
           </div>
         ))}

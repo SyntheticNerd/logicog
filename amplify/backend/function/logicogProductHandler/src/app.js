@@ -66,14 +66,10 @@ app.get("/products", async function (req, res) {
   Product.find().then((products) => res.json(products));
 });
 
-app.get("/products/*", function (req, res) {
-  // Add your code here
-  res.json({ success: "get call succeed!", url: req.url });
+app.get("/products/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  const product = await Product.find(productId);
 });
-
-/****************************
- * Example post method *
- ****************************/
 
 app.post("/products", async function (req, res) {
   console.log("Creating product");

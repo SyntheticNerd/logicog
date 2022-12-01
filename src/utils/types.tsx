@@ -1,4 +1,5 @@
 export interface Style {
+  _id: any;
   title: string;
   images: string[];
   color: string;

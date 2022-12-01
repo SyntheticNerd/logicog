@@ -38,7 +38,7 @@ const filterList = [
     list: ["G", "PRO"],
   },
   {
-    title: "POWER DELIVERY",
+    title: "SENSOR",
     list: ["Optical Sensor", "HERO 25K Sensor"],
   },
 ];
@@ -82,11 +82,11 @@ const ProductControlBoard = ({ products }: Props) => {
         {!hideFilters && (
           <FiltersStyled>
             {filterList.map((section) => (
-              <div>
+              <div key={section.title}>
                 <h3>{section.title}</h3>
                 <ul>
                   {section.list.map((filter) => (
-                    <li>
+                    <li key={filter}>
                       <input type='checkbox' name={filter} id={filter} />
                       <label htmlFor={filter}>{filter}</label>
                     </li>
@@ -99,11 +99,7 @@ const ProductControlBoard = ({ products }: Props) => {
 
         <div className='productSection'>
           {products.map((product) => (
-            <>
-              <ProductCard product={product} />
-              <ProductCard product={product} />
-              <ProductCard product={product} />
-            </>
+            <ProductCard key={product._id.toString()} product={product} />
           ))}
         </div>
       </div>

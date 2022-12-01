@@ -13,7 +13,7 @@ const GamingMice = () => {
     setLoading(true);
     getAllProducts().then((data) => {
       setProducts(data);
-      console.log(data);
+      // console.log(data);
       setLoading(false);
     });
   }, []);
