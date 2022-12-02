@@ -68,7 +68,14 @@ app.get("/products", async function (req, res) {
 
 app.get("/products/:productId", async (req, res) => {
   const productId = req.params.productId;
-  const product = await Product.find(productId);
+  console.log(productId);
+  try {
+    const product = await Product.findById(productId);
+    res.json({ product: product });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: "Can not fin product in database", error: err });
+  }
 });
 
 app.post("/products", async function (req, res) {

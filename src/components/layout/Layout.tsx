@@ -1,4 +1,5 @@
 import React from "react";
+import Cart from "./cart/Cart";
 import Footer from "./footer/Footer";
 import Nav from "./nav/Nav";
 import TopBar from "./topBar/TopBar";
@@ -14,6 +15,7 @@ const Layout = ({ children }: Props) => {
         <TopBar />
         <Nav />
       </header>
+      <Cart />
       <main>{children}</main>
       <Footer />
     </div>

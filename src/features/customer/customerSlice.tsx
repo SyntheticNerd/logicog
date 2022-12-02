@@ -70,3 +70,4 @@ export const customerSlice = createSlice({
 
 export default customerSlice.reducer;
 export const customerState = (state: RootState) => state.customer;
+export const cartState = (state: RootState) => state.customer.cart.items;

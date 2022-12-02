@@ -166,3 +166,17 @@ export const addProductToCart = async (prodId: any) => {
     console.log("Store cart in redux until user creates account");
   }
 };
+
+export const getProductBtId = async (prodId: string) => {
+  console.log(prodId);
+  try {
+    const res = await fetch(
+      `https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/products/${prodId}`
+    );
+    const data = await res.json();
+    console.log(data);
+    return data.product;
+  } catch (err) {
+    console.log("can not get product", err);
+  }
+};

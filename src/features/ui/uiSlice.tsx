@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 const initialState = {
   navOpen: false,
@@ -25,4 +26,6 @@ export const uiSlice = createSlice({
 });
 
 export const { toggleNav, openCart, closeCart, toggleCart } = uiSlice.actions;
+export const cartOpen = (state: RootState) => state.uiControl.cartOpen;
+export const navOpen = (state: RootState) => state.uiControl.navOpen;
 export default uiSlice.reducer;

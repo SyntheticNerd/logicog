@@ -5,7 +5,7 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    ui: uiReducer,
+    uiControl: uiReducer,
     customer: customerReducer,
   },
 });

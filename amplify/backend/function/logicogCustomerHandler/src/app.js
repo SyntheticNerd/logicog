@@ -104,6 +104,7 @@ app.post("/customers/current", function (req, res) {
   if (req.customer) {
     req.session.destroy();
     res.json({
+      //! Populate will not work for products, maybe if we combine lambda functions
       customer: req.customer,
     });
   } else {
