@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import image from "../../images/keyboard.jpg";
+import image from "../../images/banners/myaccount-logitechg.webp";
 
 export const HeroStyled = styled.div`
-  height: 70vh;
+  height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,20 +11,9 @@ export const HeroStyled = styled.div`
   position: relative;
   z-index: 0;
   overflow: hidden;
-  &::before {
-    background: url(${image});
-    background-size: 100%;
-    background-position: center;
-    content: "";
-    position: absolute;
-    top: -1%;
-    left: -1%;
-    height: 102%;
-    width: 102%;
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
-    z-index: -1;
-  }
+  background: url(${image});
+  background-size: cover;
+  background-position: center;
   h1 {
     color: white;
     font-size: 4em;

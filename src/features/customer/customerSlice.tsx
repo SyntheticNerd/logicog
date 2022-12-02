@@ -1,18 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-interface UserState {
+interface CustomerState {
   firstName: String;
   lastName: String;
   email: String;
-  cart: { items: { productId: any; quantity: Number; _id: any }[] };
+  cart: { items: { productId: any; quantity: number; _id: any }[] };
+  isLoggedIn: Boolean;
 }
 
-const initialState = {
+const initialState: CustomerState = {
   firstName: "",
   lastName: "",
   email: "",
-  cart: {},
+  cart: { items: [] },
+  isLoggedIn: false,
 };
 
 export const fetchCustomer = createAsyncThunk(
@@ -34,7 +36,7 @@ export const fetchCustomer = createAsyncThunk(
     );
     const data = await result.json();
     if (data.customer) {
-      console.log("In this if statement")
+      console.log("In this if statement");
       return data.customer;
     } else {
       throw new Error("Customer not logged in.");
@@ -44,7 +46,7 @@ export const fetchCustomer = createAsyncThunk(
 
 export const customerSlice = createSlice({
   name: "customer",
-  initialState,
+  initialState: initialState,
   reducers: {
     // getCustomer(state)=>{
     //   return state;
@@ -52,14 +54,16 @@ export const customerSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCustomer.fulfilled, (state, action) => {
-      state = action.payload;
-      console.log("Success", state)
+      let copy = action.payload;
+      copy.isLoggedIn = true;
+      console.log("Success", state);
+      return copy;
     });
     builder.addCase(fetchCustomer.pending, (state, action) => {
       console.log("PENDING");
     });
     builder.addCase(fetchCustomer.rejected, (state, action) => {
-      console.log("REJECTED");
+      console.log("Customer not logged in");
     });
   },
 });

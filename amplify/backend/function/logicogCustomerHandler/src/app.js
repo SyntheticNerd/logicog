@@ -3,7 +3,8 @@
 const express = require("express");
 const session = require("express-session");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-const MongoDBStore = require("connect-mongodb-session")(session);
+const MongoDBStore = require("connect-mongo");
+// const MongoDBStore = require("connect-mongodb-session")(session);
 
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
@@ -12,10 +13,15 @@ const Customer = require("./models/customer");
 
 // declare a new express app
 const app = express();
-const store = new MongoDBStore({
-  uri: `mongodb+srv://admin:${process.env.MONGO_PW}@cluster0.nws27lc.mongodb.net/customers?retryWrites=true&w=majority`,
-  collection: "session",
+const store = MongoDBStore.create({
+  mongoUrl: `mongodb+srv://admin:${process.env.MONGO_PW}@cluster0.nws27lc.mongodb.net/customers?retryWrites=true&w=majority`,
+  collectionName: "session",
+  // collection: "session",
 });
+// const store = new MongoDBStore({
+//   uri: `mongodb+srv://admin:${process.env.MONGO_PW}@cluster0.nws27lc.mongodb.net/customers?retryWrites=true&w=majority`,
+//   collection: "session",
+// });
 
 app.use(bodyParser.json());
 app.use(awsServerlessExpressMiddleware.eventContext());
@@ -35,10 +41,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: store,
+    // maxAge: expirationTime,
     // expires: new Date(Date.now() + expirationTime),
     cookie: {
-      //expires after 30 minutes
-      expires: new Date(Date.now() + expirationTime),
+      maxAge: expirationTime,
     },
   })
 );
@@ -47,20 +53,22 @@ app.use(async (req, res, next) => {
   const sid = req.body.sid;
   console.log("SID", sid);
   if (sid !== undefined && sid) {
-    //TODO check if session has expired
+    ////check if session has expired
     store.get(sid, (error, session) => {
-      console.log("ERROR", error);
-      console.log("SESSION", session);
-      console.log("EXPIRES", session.cookie.expires);
       if (!session || session === undefined) {
+        console.log("ERROR", error);
         console.log("No Session Found");
         return next();
       } else {
+        console.log("SESSION", session);
+        console.log("EXPIRES", session.cookie.expires);
+        store.touch(sid, req.session, (err) => {
+          return err;
+        });
         //! Can not set the entire session all at once gives touch method error
         req.session.customer = session.customer;
-        req.session.cookie = session.cookie;
-        //does not work
-        // req.session.id = sid;
+        // req.session.cookie = session.cookie;
+
         console.log("IDS", req.sessionID, req.session.id);
         //TODO convert to try catch
         //? not entirely sure why i am doing this anymore
@@ -93,12 +101,13 @@ app.get("/customers", async function (req, res) {
 
 app.post("/customers/current", function (req, res) {
   // Add your code here
-  console.log("THIS IS RUNNING")
   if (req.customer) {
+    req.session.destroy();
     res.json({
       customer: req.customer,
     });
   } else {
+    req.session.destroy();
     res.json({ message: "No customer logged In" });
   }
 });
