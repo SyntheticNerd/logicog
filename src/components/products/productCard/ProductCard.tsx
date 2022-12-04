@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Product } from "../../../utils/types";
 import { ProductCardStyled } from "./ProductCardStyled";
 import { ReactComponent as CartIcon } from "../../../images/icons/cart.svg";
-import { addProductToCart } from "../../../utils/apiHelpers";
+import { addProductToCart } from "../../../features/customer/customerSlice";
+import { useAppDispatch } from "../../../features/store";
 
 interface Props {
   product: Product;
@@ -10,6 +11,17 @@ interface Props {
 //TODO Add series to product
 const ProductCard = ({ product }: Props) => {
   const [style, setStyle] = useState(0);
+  const dispatch = useAppDispatch();
+
+  const addToCartHandler = () => {
+    dispatch(
+      addProductToCart({
+        productId: product._id,
+        styleId: product.styles[style]._id,
+      })
+    );
+  };
+
   return (
     <ProductCardStyled>
       <div className='imageWrapper'>
@@ -43,10 +55,7 @@ const ProductCard = ({ product }: Props) => {
           )}
           <b>${product.price}</b>
           {product.styles[style].quantity > 0 ? (
-            <button
-              key={product._id.toString()}
-              onClick={() => addProductToCart(product._id)}
-            >
+            <button key={product._id.toString()} onClick={addToCartHandler}>
               <CartIcon /> ADD TO CART
             </button>
           ) : (

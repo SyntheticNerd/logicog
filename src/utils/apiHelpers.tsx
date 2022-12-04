@@ -143,7 +143,21 @@ export const getAllProducts = async () => {
   return data;
 };
 
-export const addProductToCart = async (prodId: any) => {
+export const getProductBtId = async (prodId: string) => {
+  console.log(prodId);
+  try {
+    const res = await fetch(
+      `https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/products/${prodId}`
+    );
+    const data = await res.json();
+    console.log(data);
+    return data.product;
+  } catch (err) {
+    console.log("can not get product", err);
+  }
+};
+
+export const addProductToCartApi = async (prodId: any, styleId: String) => {
   const sid = localStorage.getItem("sid");
   if (sid) {
     const res = await fetch(
@@ -156,6 +170,7 @@ export const addProductToCart = async (prodId: any) => {
         body: JSON.stringify({
           sid: sid,
           productId: prodId,
+          styleId: styleId,
         }),
       }
     );
@@ -167,16 +182,28 @@ export const addProductToCart = async (prodId: any) => {
   }
 };
 
-export const getProductBtId = async (prodId: string) => {
-  console.log(prodId);
-  try {
+export const changeQuantityApi = async (prodId: any, newQty: number) => {
+  const sid = localStorage.getItem("sid");
+  if (sid) {
     const res = await fetch(
-      `https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/products/${prodId}`
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/updateCartQuantity",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: sid,
+          productId: prodId,
+          newQuantity: newQty,
+        }),
+      }
     );
     const data = await res.json();
     console.log(data);
-    return data.product;
-  } catch (err) {
-    console.log("can not get product", err);
+
+    return data;
+  } else {
+    console.log("Store cart in redux until user creates account");
   }
 };

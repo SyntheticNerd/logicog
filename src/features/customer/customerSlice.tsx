@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { addProductToCartApi, changeQuantityApi } from "../../utils/apiHelpers";
 import { RootState } from "../store";
 
 interface CustomerState {
   firstName: String;
   lastName: String;
   email: String;
-  cart: { items: { productId: any; quantity: number; _id: any }[] };
+  cart: {
+    items: { productId: any; styleId: any; quantity: number; _id?: any }[];
+  };
   isLoggedIn: Boolean;
 }
 
@@ -43,14 +46,83 @@ export const fetchCustomer = createAsyncThunk(
     }
   }
 );
-
+//TODO if cart has items and customer logs in merge cart items
 export const customerSlice = createSlice({
   name: "customer",
   initialState: initialState,
   reducers: {
-    // getCustomer(state)=>{
-    //   return state;
-    // }
+    addProductToCart: (state, action) => {
+      const { productId, styleId } = action.payload;
+
+      const cartProductIndex = state.cart.items.findIndex((cp) => {
+        return cp.productId.toString() === productId.toString();
+      });
+
+      let newQuantity = 1;
+      const updatedCartItems = [...state.cart.items];
+      if (cartProductIndex >= 0) {
+        newQuantity = state.cart.items[cartProductIndex].quantity + 1;
+        updatedCartItems[cartProductIndex].quantity = newQuantity;
+      } else {
+        updatedCartItems.push({
+          productId: productId,
+          styleId: styleId,
+          quantity: newQuantity,
+        });
+      }
+      const updatedCart = {
+        items: updatedCartItems,
+      };
+      state.cart = updatedCart;
+      console.log("UPDATED CART in Redux", state.cart);
+      if (state.isLoggedIn) {
+        addProductToCartApi(productId, styleId)
+          .then((res) => console.log(res))
+          .catch((err) => console.log("ERROR", err));
+      }
+    },
+    changeQuantity: (state, action) => {
+      const { productId, newQuantity } = action.payload;
+      console.log(productId, newQuantity);
+      //find item in cart
+      const cartProductIndex = state.cart.items.findIndex((cp) => {
+        return cp.productId.toString() === productId.toString();
+      });
+
+      console.log(cartProductIndex);
+
+      let updatedCartItems = [...state.cart.items];
+      if (cartProductIndex === undefined || cartProductIndex === null) {
+        console.log("PRODUCT DOES NOT EXIST IN CART");
+      } else if (newQuantity <= 0) {
+        //filter out items that are not the item with 0 quantity
+        console.log("DELETEING");
+        updatedCartItems = updatedCartItems.filter((cartItem) => {
+          console.log(cartItem.productId.toString(), productId.toString());
+          return cartItem.productId.toString() !== productId.toString();
+        });
+        console.log(updatedCartItems);
+        const updatedCart = {
+          items: updatedCartItems,
+        };
+        state.cart = updatedCart;
+        console.log("UPDATED CART", state.cart);
+      } else {
+        console.log("UPDATING QUANTITY");
+        updatedCartItems[cartProductIndex].quantity = newQuantity;
+        const updatedCart = {
+          items: updatedCartItems,
+        };
+        state.cart = updatedCart;
+        console.log("UPDATED CART", state.cart);
+      }
+
+      if (state.isLoggedIn) {
+        changeQuantityApi(productId, newQuantity)
+          .then((res) => console.log(res))
+          .catch((err) => console.log("COULD NOT UPDATE QUANTITY"));
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCustomer.fulfilled, (state, action) => {
@@ -63,11 +135,14 @@ export const customerSlice = createSlice({
       console.log("PENDING");
     });
     builder.addCase(fetchCustomer.rejected, (state, action) => {
+      state = initialState;
       console.log("Customer not logged in");
     });
   },
 });
 
 export default customerSlice.reducer;
+
+export const { changeQuantity, addProductToCart } = customerSlice.actions;
 export const customerState = (state: RootState) => state.customer;
 export const cartState = (state: RootState) => state.customer.cart.items;

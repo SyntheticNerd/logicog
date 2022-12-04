@@ -28,13 +28,17 @@ const customerSchema = new Schema({
           ref: "Product",
           required: true,
         },
+        styleId: {
+          type: Schema.Types.ObjectId,
+          required: true,
+        },
         quantity: { type: Number, required: true },
       },
     ],
   },
 });
 
-customerSchema.methods.addToCart = function(productId) {
+customerSchema.methods.addToCart = function (productId, styleId) {
   const cartProductIndex = this.cart.items.findIndex((cp) => {
     return cp.productId.toString() === productId.toString();
   });
@@ -46,6 +50,7 @@ customerSchema.methods.addToCart = function(productId) {
   } else {
     updatedCartItems.push({
       productId: productId,
+      styleId: styleId,
       quantity: newQuantity,
     });
   }
@@ -55,6 +60,37 @@ customerSchema.methods.addToCart = function(productId) {
   this.cart = updatedCart;
   console.log("UPDATED CART", this.cart);
   return this.save();
+};
+
+customerSchema.methods.changeQuantity = function (productId, newQuantity) {
+  //find item in cart
+  const cartProductIndex = this.cart.items.findIndex((cp) => {
+    return cp.productId.toString() === productId.toString();
+  });
+  console.log(cartProductIndex);
+  let updatedCartItems = [...this.cart.items];
+  if (cartProductIndex === undefined || cartProductIndex === null) {
+    return new Error("Can not find item in cart");
+  } else if (newQuantity <= 0) {
+    //filter out items that are not the item with 0 quantity
+    updatedCartItems = updatedCartItems.filter(
+      (cartItem) => cartItem.productId.toString() !== productId.toString()
+    );
+    const updatedCart = {
+      items: updatedCartItems,
+    };
+    this.cart = updatedCart;
+    console.log("UPDATED CART", this.cart);
+    return this.save();
+  } else {
+    updatedCartItems[cartProductIndex].quantity = newQuantity;
+    const updatedCart = {
+      items: updatedCartItems,
+    };
+    this.cart = updatedCart;
+    console.log("UPDATED CART", this.cart);
+    return this.save();
+  }
 };
 
 module.exports = mongoose.model("Customer", customerSchema);

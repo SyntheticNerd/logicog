@@ -22,6 +22,8 @@ export const CartStyled = styled.div`
     right: 0;
     top: 0;
     background-color: black;
+    display: flex;
+    flex-direction: column;
     .cartHead {
       background-color: #262626;
       display: flex;
@@ -81,6 +83,29 @@ export const CartStyled = styled.div`
           height: 100%;
         }
       }
+    }
+    .cartList {
+      color: white;
+      padding: 12px;
+    }
+    .total {
+      color: white;
+      padding: 12px;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .tosAgreement {
+      color: white;
+      padding: 12px;
+    }
+    .checkoutBtn {
+      color: white;
+      background: none;
+      border: 4px solid var(--brand-color);
+      margin: 12px;
+      padding: 20px;
+      border-radius: 4px;
     }
   }
 `;

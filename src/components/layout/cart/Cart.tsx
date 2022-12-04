@@ -6,26 +6,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ReactComponent as CheckMark } from "../../../images/icons/checkmark.svg";
 import { cartState } from "../../../features/customer/customerSlice";
 import { getProductBtId } from "../../../utils/apiHelpers";
+import CartItem from "./CartItem";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState<any>([]);
+  const [total, setTotal] = useState<number>(0);
   const open = useAppSelector(cartOpen);
   const cart = useAppSelector(cartState);
 
   useEffect(() => {
-    const _cartItems = [];
+    setCartItems([]);
+    setTotal(0);
     const getProduct = async (item: any) => {
       const product = await getProductBtId(item.productId);
-      setCartItems((prev: any) => [...prev, product]);
+      setTotal((prev) => prev + product.price * item.quantity);
+      setCartItems((prev: any) => [
+        ...prev,
+        { product: product, qty: item.quantity, styleId: item.styleId },
+      ]);
     };
     cart.forEach((item) => {
       getProduct(item);
     });
   }, [cart]);
-
-  useEffect(() => {
-    console.log(cartItems);
-  });
 
   const dispatch = useAppDispatch();
 
@@ -52,7 +55,28 @@ const Cart = () => {
               </div>
               <p>Your order qualifies for Free shipping and Free returns</p>
             </div>
-            {/* <div className="cartList">{cart.length > 0 && cart.map((item)=>)}</div> */}
+            <div className='cartList'>
+              {cartItems.length > 0 &&
+                //TODO change i to item title for production or remove strict mode
+                cartItems.map((item: any) => <CartItem product={item} />)}
+            </div>
+            <div className='total'>
+              <p>
+                Item Subtotal: <span>(Not Including Tax or Shipping)</span>
+              </p>
+              <strong>${total.toFixed(2)}</strong>
+              <a href=''>ENTER PROMO CODE</a>
+            </div>
+            <div className='tosAgreement'>
+              <input type='checkbox' name='' id='' />
+              <label htmlFor=''>
+                By checking this box, I agree to the{" "}
+                <a href=''>Privacy Policy</a> and the{" "}
+                <a href=''>Terms of Sales</a> of{" "}
+                <a href=''>DR globalTech inc.</a>
+              </label>
+            </div>
+            <button className='checkoutBtn'>CHECKOUT ►</button>
           </motion.div>
         </AnimatePresence>
       </CartStyled>

@@ -183,13 +183,14 @@ app.post("/customers/add-to-cart", async function (req, res) {
   //schema should have done everything under one lambda function
   //TODO move everything to one lambda function
   const prodId = req.body.productId;
+  const styleId = req.body.styleId;
   //at this point pray we have proper session data
   console.log("CUSTOMER", req.customer);
   console.log("SESSION", req.session);
   //have to return or else we get a unhandled promise rejection
 
   try {
-    const response = await req.customer.addToCart(prodId);
+    const response = await req.customer.addToCart(prodId, styleId);
     console.log("Past addToCart", res);
     req.session.customer = req.customer;
     store.set(req.body.sid, req.session);
@@ -203,6 +204,25 @@ app.post("/customers/add-to-cart", async function (req, res) {
   } catch (err) {
     console.log("Error", err);
     return res.json({ error: "Could not add to cart." });
+  }
+});
+
+app.post("/customers/updateCartQuantity", async (req, res) => {
+  const { productId, newQuantity } = req.body;
+  try {
+    const response = await req.customer.changeQuantity(productId, newQuantity);
+    req.session.customer = req.customer;
+    store.set(req.body.sid, req.session);
+    req.session.destroy();
+    return res.json({
+      success: "Updated Cart quantity",
+      productId: productId,
+      response: response,
+      customer: req.customer,
+    });
+  } catch (err) {
+    console.log("Error", err);
+    return res.json({ error: "Could not update." });
   }
 });
 
