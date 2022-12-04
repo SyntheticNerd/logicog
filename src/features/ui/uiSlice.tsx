@@ -27,5 +27,5 @@ export const uiSlice = createSlice({
 
 export const { toggleNav, openCart, closeCart, toggleCart } = uiSlice.actions;
 export const cartOpen = (state: RootState) => state.uiControl.cartOpen;
-export const navOpen = (state: RootState) => state.uiControl.navOpen;
+export const navOpenState = (state: RootState) => state.uiControl.navOpen;
 export default uiSlice.reducer;

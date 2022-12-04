@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const TopBarStyled = styled.nav`
   background-color: var(--top-bar-color);
-  z-index: 2;
+  z-index: 5;
   position: relative;
   * {
     color: white;
