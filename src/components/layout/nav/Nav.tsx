@@ -13,15 +13,17 @@ const Nav = () => {
   const navOpen = useAppSelector(navOpenState);
   return (
     <>
-      <NavStyled>
-        <div className='left'>
-          <NavBtn />
-        </div>
+      <NavStyled navOpen={navOpen}>
+        <div className='nav'>
+          <div className='left'>
+            <NavBtn />
+          </div>
 
-        <Logo />
-        <div className='right'>
-          <CartBtn />
-          <SearchBtn />
+          <Logo />
+          <div className='right'>
+            <CartBtn />
+            <SearchBtn />
+          </div>
         </div>
       </NavStyled>
       <AnimatePresence>{navOpen && <NavMenu />}</AnimatePresence>

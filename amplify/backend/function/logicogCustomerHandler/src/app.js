@@ -226,6 +226,26 @@ app.post("/customers/updateCartQuantity", async (req, res) => {
   }
 });
 
+app.post("/customers/log-out", async (req, res) => {
+  const { sid } = req.body;
+  try {
+    console.log("DESTROYING SESSION", sid);
+    store.destroy(sid, (err) => {
+      if (err) {
+        console.log("Can not destroy that session");
+        req.session.destroy();
+        return res.json({ error: err });
+      } else {
+        req.session.destroy();
+        return res.json({ success: "User Logged Out" });
+      }
+    });
+  } catch (err) {
+    req.session.destroy();
+    return res.json({ error: err });
+  }
+});
+
 app.listen(3000, function () {
   console.log("App starting");
 });

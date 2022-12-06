@@ -3,13 +3,16 @@ import { getAllProducts } from "../../../utils/apiHelpers";
 import { Product } from "../../../utils/types";
 import ProductCard from "../productCard/ProductCard";
 import ProductControlBoard from "../ProductControlBoard";
-import GMBanner from "./GMBanner";
+import ProductBanner from "./ProductBanner";
+import { useParams } from "react-router-dom";
 
-const GamingMice = () => {
+const ProductsPage = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
+  const { category } = useParams();
 
   useEffect(() => {
+    console.log(category);
     setLoading(true);
     getAllProducts().then((data) => {
       setProducts(data);
@@ -19,14 +22,10 @@ const GamingMice = () => {
   }, []);
   return (
     <div>
-      <GMBanner />
-      {loading ? (
-        <p>Loading</p>
-      ) : (
-        <ProductControlBoard products={products}/>
-      )}
+      <ProductBanner category={category} />
+      {loading ? <p>Loading</p> : <ProductControlBoard products={products} />}
     </div>
   );
 };
 
-export default GamingMice;
+export default ProductsPage;

@@ -207,3 +207,27 @@ export const changeQuantityApi = async (prodId: any, newQty: number) => {
     console.log("Store cart in redux until user creates account");
   }
 };
+
+export const logoutApi = async () => {
+  const sid = localStorage.getItem("sid");
+  if (sid) {
+    const res = await fetch(
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/log-out",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: sid,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+
+    return data;
+  } else {
+    console.log("No user logged in");
+  }
+};

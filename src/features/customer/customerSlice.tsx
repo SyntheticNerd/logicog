@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addProductToCartApi, changeQuantityApi } from "../../utils/apiHelpers";
+import {
+  addProductToCartApi,
+  changeQuantityApi,
+  logoutApi,
+} from "../../utils/apiHelpers";
 import { RootState } from "../store";
 
 interface CustomerState {
@@ -18,6 +22,22 @@ const initialState: CustomerState = {
   email: "",
   cart: { items: [] },
   isLoggedIn: false,
+};
+
+const mergeCarts = (cartA: any[], cartB: any[]) => {
+  const arr = [...cartA, ...cartB];
+  const result = Object.values(
+    arr.reduce((a, curr) => {
+      if (!a[curr.productId]) {
+        a[curr.productId] = Object.assign({}, curr);
+      } else {
+        a[curr.productId].quantity += curr.quantity;
+      }
+      return a;
+    }, {})
+  );
+  // console.log(result);
+  return result;
 };
 
 export const fetchCustomer = createAsyncThunk(
@@ -51,6 +71,11 @@ export const customerSlice = createSlice({
   name: "customer",
   initialState: initialState,
   reducers: {
+    logout: (state, action) => {
+      logoutApi();
+      localStorage.removeItem("sid");
+      return initialState;
+    },
     addProductToCart: (state, action) => {
       const { productId, styleId } = action.payload;
 
@@ -128,6 +153,7 @@ export const customerSlice = createSlice({
     builder.addCase(fetchCustomer.fulfilled, (state, action) => {
       let copy = action.payload;
       copy.isLoggedIn = true;
+      copy.cart.items = mergeCarts(state.cart.items, copy.cart.items);
       console.log("Success", state);
       return copy;
     });
@@ -143,6 +169,8 @@ export const customerSlice = createSlice({
 
 export default customerSlice.reducer;
 
-export const { changeQuantity, addProductToCart } = customerSlice.actions;
+export const { changeQuantity, addProductToCart, logout } =
+  customerSlice.actions;
 export const customerState = (state: RootState) => state.customer;
 export const cartState = (state: RootState) => state.customer.cart.items;
+export const isLoggedInState = (state: RootState) => state.customer.isLoggedIn;

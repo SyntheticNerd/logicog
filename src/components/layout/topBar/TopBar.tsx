@@ -3,8 +3,16 @@ import { Link } from "react-router-dom";
 import AccountIcon from "../../../images/icons/AccountIcon";
 import GlobeIcon from "../../../images/icons/GlobeIcon";
 import { TopBarStyled } from "./TopBarStyled";
+import { useAppSelector, useAppDispatch } from "../../../features/store";
+
+import {
+  logout,
+  isLoggedInState,
+} from "../../../features/customer/customerSlice";
 
 const TopBar = () => {
+  const isLoggedIn = useAppSelector(isLoggedInState);
+  const dispatch = useAppDispatch();
   return (
     <TopBarStyled>
       <div>
@@ -26,6 +34,13 @@ const TopBar = () => {
           <Link to='my-account' className='icon-container'>
             <AccountIcon /> MY ACCOUNT
           </Link>
+          <hr />
+          <button
+            className='icon-container'
+            onClick={() => dispatch(logout(null))}
+          >
+            LOG OUT
+          </button>
           <hr />
           <Link to='create-product'>Create Product</Link>
         </div>

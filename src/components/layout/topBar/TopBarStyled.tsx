@@ -39,6 +39,8 @@ export const TopBarStyled = styled.nav`
     display: flex;
     align-items: center;
     opacity: 50%;
+    background: none;
+    border: none;
     :hover {
       opacity: 100%;
     }

@@ -81,7 +81,7 @@ export const ControlBarStyled = styled.div`
   margin: auto;
   max-width: 1490px;
   padding: 28px 0px;
-  z-index: 5;
+  z-index: 2;
 `;
 
 export const FilterBtnStyled = styled.button`

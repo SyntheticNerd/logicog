@@ -1,5 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { NavMenuStyled } from "./NavStyled";
+import { toggleNav } from "../../../features/ui/uiSlice";
+import { useAppDispatch } from "../../../features/store";
 
 const menuItems = [
   {
@@ -15,44 +18,45 @@ const menuItems = [
     image: "navigation-products-keyboard.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "GAMING AUDIO",
+    image: "navigation-products-audio-video.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "STREAMING GEAR",
+    image: "navigation-products-streaming-gear.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "DRIVING",
+    image: "prowheels2-nav.png",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "SPACE",
+    image: "navigation-products-space.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "FLIGHT",
+    image: "navigation-products-flight.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "FARM",
+    image: "navigation-products-farm.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "GAMEPADS",
+    image: "navigation-products-gamepads.jpg",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "ACCESSORIES",
+    image: "plp-navigation-products-accessories.png",
   },
   {
-    title: "GAMING MICE",
-    image: "navigation-products-mice.jpg",
+    title: "CLOUD GAMING",
+    image: "navigation-products-cloud-gaming.png",
   },
 ];
 
 const NavMenu = () => {
+  const dispatch = useAppDispatch();
   return (
     <NavMenuStyled
       initial={{ transform: "translateY(-100%)" }}
@@ -62,13 +66,16 @@ const NavMenu = () => {
     >
       <div className='menuGrid'>
         {menuItems.map((item) => (
-          <div>
+          <Link
+            to={`products/${item.title.replace(/\s/g, "-").toLowerCase()}`}
+            onClick={() => dispatch(toggleNav(null))}
+          >
             <img
               src={require(`../../../images/navigation/${item.image}`)}
               alt={item.title}
             />
-            {item.title}
-          </div>
+            <p>{item.title}</p>
+          </Link>
         ))}
       </div>
     </NavMenuStyled>
