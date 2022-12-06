@@ -36,8 +36,29 @@ const customerSchema = new Schema({
       },
     ],
   },
+  transactions: [
+    {
+      items: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          },
+          styleId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+          },
+          quantity: { type: Number, required: true },
+        },
+      ],
+      date: { type: Schema.Types.Date, required: true },
+      total: { type: Number, required: true },
+      refunded: { type: Boolean, required: true, default: false },
+    },
+  ],
 });
-
+//TODO need an update cart
 customerSchema.methods.addToCart = function (productId, styleId) {
   const cartProductIndex = this.cart.items.findIndex((cp) => {
     return cp.productId.toString() === productId.toString();
@@ -59,6 +80,22 @@ customerSchema.methods.addToCart = function (productId, styleId) {
   };
   this.cart = updatedCart;
   console.log("UPDATED CART", this.cart);
+  return this.save();
+};
+
+//TODO Definitely want to rethink the multiple lambda functions or we need to pass prices to the cart items at creation
+customerSchema.methods.checkout = function (total) {
+  const updatedTransactions = [...this.transactions];
+  const newTransaction = {
+    items: this.cart.items,
+    date: new Date(),
+    total: total,
+  };
+  updatedTransactions.push(newTransaction);
+  console.log(updatedTransactions);
+  this.transactions = updatedTransactions;
+  this.cart.items = [];
+  console.log("UPDATED TRANSACTIONS");
   return this.save();
 };
 

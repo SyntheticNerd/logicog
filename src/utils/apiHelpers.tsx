@@ -52,6 +52,30 @@ export const loginCustomer = async (email: string, password: string) => {
   }
 };
 
+export const logoutApi = async () => {
+  const sid = localStorage.getItem("sid");
+  if (sid) {
+    const res = await fetch(
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/log-out",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: sid,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+
+    return data;
+  } else {
+    console.log("No user logged in");
+  }
+};
+
 interface Style {
   title: string;
   images: string[];
@@ -208,11 +232,11 @@ export const changeQuantityApi = async (prodId: any, newQty: number) => {
   }
 };
 
-export const logoutApi = async () => {
+export const checkoutApi = async (total: number) => {
   const sid = localStorage.getItem("sid");
   if (sid) {
     const res = await fetch(
-      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/log-out",
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/checkout",
       {
         method: "POST",
         headers: {
@@ -220,6 +244,7 @@ export const logoutApi = async () => {
         },
         body: JSON.stringify({
           sid: sid,
+          total: total,
         }),
       }
     );
@@ -228,6 +253,8 @@ export const logoutApi = async () => {
 
     return data;
   } else {
-    console.log("No user logged in");
+    console.log(
+      "No customer logged in, have them create account, maybe create guest checkout"
+    );
   }
 };

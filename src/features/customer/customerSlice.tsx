@@ -148,7 +148,12 @@ export const customerSlice = createSlice({
           .catch((err) => console.log("COULD NOT UPDATE QUANTITY"));
       }
     },
+    checkout: (state, action)=>{
+      const total = action.payload;
+      
+    }
   },
+  
   extraReducers: (builder) => {
     builder.addCase(fetchCustomer.fulfilled, (state, action) => {
       let copy = action.payload;

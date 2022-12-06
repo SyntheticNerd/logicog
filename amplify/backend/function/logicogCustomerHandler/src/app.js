@@ -178,6 +178,26 @@ app.post("/customers/login", async function (req, res) {
   }
 });
 
+app.post("/customers/log-out", async (req, res) => {
+  const { sid } = req.body;
+  try {
+    console.log("DESTROYING SESSION", sid);
+    store.destroy(sid, (err) => {
+      if (err) {
+        console.log("Can not destroy that session");
+        req.session.destroy();
+        return res.json({ error: err });
+      } else {
+        req.session.destroy();
+        return res.json({ success: "User Logged Out" });
+      }
+    });
+  } catch (err) {
+    req.session.destroy();
+    return res.json({ error: err });
+  }
+});
+
 app.post("/customers/add-to-cart", async function (req, res) {
   //I wish i could verrify that the product exists but I dont have access to the Product
   //schema should have done everything under one lambda function
@@ -226,23 +246,21 @@ app.post("/customers/updateCartQuantity", async (req, res) => {
   }
 });
 
-app.post("/customers/log-out", async (req, res) => {
-  const { sid } = req.body;
+app.post("customers/checkout", async (req, res) => {
+  const total = req.body.total;
   try {
-    console.log("DESTROYING SESSION", sid);
-    store.destroy(sid, (err) => {
-      if (err) {
-        console.log("Can not destroy that session");
-        req.session.destroy();
-        return res.json({ error: err });
-      } else {
-        req.session.destroy();
-        return res.json({ success: "User Logged Out" });
-      }
+    const response = await req.customer.checkout(total);
+    req.session.customer = req.customer;
+    store.set(req.body.sid, req.session);
+    req.session.destroy();
+    return res.json({
+      success: "Checkout Complete",
+      response: response,
+      customer: req.customer,
     });
   } catch (err) {
-    req.session.destroy();
-    return res.json({ error: err });
+    console.log("Error", err);
+    return res.json({ error: "Could not checkout." });
   }
 });
 
