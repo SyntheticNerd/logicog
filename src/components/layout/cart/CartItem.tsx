@@ -11,11 +11,9 @@ const CartItem = ({
 }: {
   product: { product: Product; styleId: string; qty: number };
 }) => {
-  console.log(product);
   const style = product.product.styles.filter(
     (style) => style._id === product.styleId
   )[0];
-  console.log(style);
   const dispatch = useAppDispatch();
 
   const deleteFromCartHandler = () => {

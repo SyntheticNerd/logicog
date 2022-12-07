@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addProductToCartApi,
   changeQuantityApi,
+  checkoutApi,
   logoutApi,
 } from "../../utils/apiHelpers";
 import { RootState } from "../store";
@@ -13,6 +14,7 @@ interface CustomerState {
   cart: {
     items: { productId: any; styleId: any; quantity: number; _id?: any }[];
   };
+  transactions: any[];
   isLoggedIn: Boolean;
 }
 
@@ -21,6 +23,7 @@ const initialState: CustomerState = {
   lastName: "",
   email: "",
   cart: { items: [] },
+  transactions: [],
   isLoggedIn: false,
 };
 
@@ -148,18 +151,27 @@ export const customerSlice = createSlice({
           .catch((err) => console.log("COULD NOT UPDATE QUANTITY"));
       }
     },
-    checkout: (state, action)=>{
+    checkout: (state, action) => {
       const total = action.payload;
-      
-    }
+      console.log("In checkout", total)
+      if (state.isLoggedIn) {
+        checkoutApi(total)
+          .then((res) => console.log(res))
+          .catch((err) => console.log("ERROR", err));
+      } else {
+        console.log(
+          "Perhaps we will add guest checkout could also redirect to login or signup"
+        );
+      }
+    },
   },
-  
+
   extraReducers: (builder) => {
     builder.addCase(fetchCustomer.fulfilled, (state, action) => {
       let copy = action.payload;
       copy.isLoggedIn = true;
       copy.cart.items = mergeCarts(state.cart.items, copy.cart.items);
-      console.log("Success", state);
+      console.log("Success", copy);
       return copy;
     });
     builder.addCase(fetchCustomer.pending, (state, action) => {
@@ -174,7 +186,7 @@ export const customerSlice = createSlice({
 
 export default customerSlice.reducer;
 
-export const { changeQuantity, addProductToCart, logout } =
+export const { changeQuantity, addProductToCart, logout, checkout } =
   customerSlice.actions;
 export const customerState = (state: RootState) => state.customer;
 export const cartState = (state: RootState) => state.customer.cart.items;

@@ -234,6 +234,8 @@ export const changeQuantityApi = async (prodId: any, newQty: number) => {
 
 export const checkoutApi = async (total: number) => {
   const sid = localStorage.getItem("sid");
+  console.log("In the API now, fetching", sid, total);
+
   if (sid) {
     const res = await fetch(
       "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/checkout",

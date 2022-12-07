@@ -4,15 +4,18 @@ import { useAppSelector, useAppDispatch } from "../../../features/store";
 import { cartOpen, closeCart } from "../../../features/ui/uiSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactComponent as CheckMark } from "../../../images/icons/checkmark.svg";
-import { cartState } from "../../../features/customer/customerSlice";
+import { cartState, checkout } from "../../../features/customer/customerSlice";
 import { getProductBtId } from "../../../utils/apiHelpers";
 import CartItem from "./CartItem";
+import { useNavigate } from "react-router";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState<any>([]);
   const [total, setTotal] = useState<number>(0);
   const open = useAppSelector(cartOpen);
   const cart = useAppSelector(cartState);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCartItems([]);
@@ -29,8 +32,6 @@ const Cart = () => {
       getProduct(item);
     });
   }, [cart]);
-
-  const dispatch = useAppDispatch();
 
   if (open) {
     return (
@@ -76,7 +77,12 @@ const Cart = () => {
                 <a href=''>DR globalTech inc.</a>
               </label>
             </div>
-            <button className='checkoutBtn'>CHECKOUT ►</button>
+            <button
+              className='checkoutBtn'
+              onClick={() => navigate("checkout")}
+            >
+              CHECKOUT ►
+            </button>
           </motion.div>
         </AnimatePresence>
       </CartStyled>

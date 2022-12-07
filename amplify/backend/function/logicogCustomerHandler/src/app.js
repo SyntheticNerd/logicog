@@ -130,6 +130,7 @@ app.post("/customers/sign-up", async function (req, res) {
     email,
     password: hashedPassword,
     cart: { items: [] },
+    transactions: [],
   });
   console.log("CUSTOMER", customer);
   let status = await customer.save();
@@ -246,10 +247,12 @@ app.post("/customers/updateCartQuantity", async (req, res) => {
   }
 });
 
-app.post("customers/checkout", async (req, res) => {
+app.post("/customers/checkout", async (req, res) => {
   const total = req.body.total;
+  console.log("CHECKING OUT", total);
   try {
     const response = await req.customer.checkout(total);
+    console.log(response);
     req.session.customer = req.customer;
     store.set(req.body.sid, req.session);
     req.session.destroy();
