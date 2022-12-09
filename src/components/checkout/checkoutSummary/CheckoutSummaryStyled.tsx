@@ -26,6 +26,13 @@ export const CheckoutSummaryStyled = styled.div`
     padding: 16px 0px;
     border-bottom: 1px solid lightgrey;
     margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    div{
+      display: flex;
+      justify-content: space-between;
+    }
   }
   .total {
     display: flex;

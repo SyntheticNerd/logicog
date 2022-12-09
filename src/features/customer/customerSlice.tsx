@@ -43,32 +43,59 @@ const mergeCarts = (cartA: any[], cartB: any[]) => {
   return result;
 };
 
-export const fetchCustomer = createAsyncThunk(
+const fetchCustomer = async () => {
+  const sid = localStorage.getItem("sid");
+  const result = await fetch(
+    "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/current",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sid: sid,
+      }),
+    }
+  );
+  const data = await result.json();
+  if (data.customer) {
+    console.log("In this if statement");
+    return data.customer;
+  } else {
+    throw new Error("Customer not logged in.");
+  }
+};
+
+export const fetchCustomerThunk = createAsyncThunk(
   "customers/fetchCustomer",
   async () => {
     console.log("executing async thunk");
-    const sid = localStorage.getItem("sid");
-    const result = await fetch(
-      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/current",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sid: sid,
-        }),
+    return await fetchCustomer();
+  }
+);
+
+export const checkoutThunk = createAsyncThunk(
+  "customer/checkout",
+  async (total: number, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    const logged = state.customer.isLoggedIn;
+    console.log("In checkout", total, logged);
+    if (logged) {
+      try {
+        const result = await checkoutApi(total);
+        console.log(result);
+        return await fetchCustomer();
+      } catch (err) {
+        console.log(err);
       }
-    );
-    const data = await result.json();
-    if (data.customer) {
-      console.log("In this if statement");
-      return data.customer;
     } else {
-      throw new Error("Customer not logged in.");
+      console.log(
+        "Perhaps we will add guest checkout could also redirect to login or signup"
+      );
     }
   }
 );
+
 //TODO if cart has items and customer logs in merge cart items
 export const customerSlice = createSlice({
   name: "customer",
@@ -151,33 +178,32 @@ export const customerSlice = createSlice({
           .catch((err) => console.log("COULD NOT UPDATE QUANTITY"));
       }
     },
-    checkout: (state, action) => {
-      const total = action.payload;
-      console.log("In checkout", total)
-      if (state.isLoggedIn) {
-        checkoutApi(total)
-          .then((res) => console.log(res))
-          .catch((err) => console.log("ERROR", err));
-      } else {
-        console.log(
-          "Perhaps we will add guest checkout could also redirect to login or signup"
-        );
-      }
-    },
   },
 
   extraReducers: (builder) => {
-    builder.addCase(fetchCustomer.fulfilled, (state, action) => {
+    builder.addCase(fetchCustomerThunk.fulfilled, (state, action) => {
       let copy = action.payload;
       copy.isLoggedIn = true;
       copy.cart.items = mergeCarts(state.cart.items, copy.cart.items);
       console.log("Success", copy);
       return copy;
     });
-    builder.addCase(fetchCustomer.pending, (state, action) => {
+    builder.addCase(fetchCustomerThunk.pending, (state, action) => {
       console.log("PENDING");
     });
-    builder.addCase(fetchCustomer.rejected, (state, action) => {
+    builder.addCase(fetchCustomerThunk.rejected, (state, action) => {
+      state = initialState;
+      console.log("Customer not logged in");
+    });
+    builder.addCase(checkoutThunk.fulfilled, (state, action) => {
+      let copy = action.payload;
+      console.log("Success", copy);
+      return copy;
+    });
+    builder.addCase(checkoutThunk.pending, (state, action) => {
+      console.log("PENDING");
+    });
+    builder.addCase(checkoutThunk.rejected, (state, action) => {
       state = initialState;
       console.log("Customer not logged in");
     });
@@ -186,7 +212,7 @@ export const customerSlice = createSlice({
 
 export default customerSlice.reducer;
 
-export const { changeQuantity, addProductToCart, logout, checkout } =
+export const { changeQuantity, addProductToCart, logout } =
   customerSlice.actions;
 export const customerState = (state: RootState) => state.customer;
 export const cartState = (state: RootState) => state.customer.cart.items;

@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from "../../../features/store";
 import { cartOpen, closeCart } from "../../../features/ui/uiSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactComponent as CheckMark } from "../../../images/icons/checkmark.svg";
-import { cartState, checkout } from "../../../features/customer/customerSlice";
+import { cartState } from "../../../features/customer/customerSlice";
 import { getProductBtId } from "../../../utils/apiHelpers";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router";

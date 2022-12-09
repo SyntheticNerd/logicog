@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../features/store";
 
-import { cartState, checkout } from "../features/customer/customerSlice";
+import { cartState } from "../features/customer/customerSlice";
 import { getProductBtId } from "../utils/apiHelpers";
 import { Link } from "react-router-dom";
-import { CheckoutStyled } from "./CheckoutStyled";
+import { CheckoutStyled, TopBar } from "./CheckoutStyled";
 import CheckoutForm from "../components/checkout/checkoutForm/CheckoutForm";
 import CheckoutSummary from "../components/checkout/checkoutSummary/CheckoutSummary";
+import Logo from "../images/Logo";
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState<any>([]);
@@ -30,23 +31,31 @@ const Checkout = () => {
   }, [cart]);
 
   return (
-    <CheckoutStyled>
-      <div className='topBar'>
-        <Link to='/'>Topbar</Link>
-      </div>
-      <div className='banner'>
-        <h1>CHECKOUT</h1>
-        <p>
-          <Link to='sign-in'>Sign in</Link> or{" "}
-          <Link to='sign-up'>create a new account</Link> to track orders and see
-          items you may have added using another device.
-        </p>
-      </div>
-      <main className='contentWrapper'>
-        <CheckoutForm />
-        <CheckoutSummary cartItems={cartItems} total={total} tax={total * 0.0725}/>
-      </main>
-    </CheckoutStyled>
+    <>
+      <TopBar>
+        <Link to='/'>
+          <Logo />
+        </Link>
+      </TopBar>
+      <CheckoutStyled>
+        <div className='banner'>
+          <h1>CHECKOUT</h1>
+          <p>
+            <Link to='sign-in'>Sign in</Link> or{" "}
+            <Link to='sign-up'>create a new account</Link> to track orders and
+            see items you may have added using another device.
+          </p>
+        </div>
+        <main className='contentWrapper'>
+          <CheckoutForm total={total} />
+          <CheckoutSummary
+            cartItems={cartItems}
+            total={total}
+            tax={total * 0.0725}
+          />
+        </main>
+      </CheckoutStyled>
+    </>
   );
 };
 

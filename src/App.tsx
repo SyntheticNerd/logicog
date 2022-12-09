@@ -5,7 +5,7 @@ import { AppDispatch, useAppDispatch } from "./features/store";
 
 import {
   customerState,
-  fetchCustomer,
+  fetchCustomerThunk,
 } from "./features/customer/customerSlice";
 import { useEffect } from "react";
 
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     const sid = localStorage.getItem("sid");
     if (sid && !customer.isLoggedIn) {
-      dispatch(fetchCustomer());
+      dispatch(fetchCustomerThunk());
       console.log(customer);
     }
   }, [customer, dispatch]);
