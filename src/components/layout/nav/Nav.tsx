@@ -18,8 +18,9 @@ const Nav = () => {
           <div className='left'>
             <NavBtn />
           </div>
-
-          <Logo />
+          <span>
+            <Logo />
+          </span>
           <div className='right'>
             <CartBtn />
             <SearchBtn />

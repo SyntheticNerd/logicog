@@ -18,10 +18,14 @@ const Cart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(closeCart(null));
+  }, [dispatch]);
+
+  useEffect(() => {
     setCartItems([]);
     setTotal(0);
     const getProduct = async (item: any) => {
-      const product = await getProductBtId(item.productId);
+      const product = await getProductBtId(item.productInfo.productId);
       setTotal((prev) => prev + product.price * item.quantity);
       setCartItems((prev: any) => [
         ...prev,
@@ -29,6 +33,7 @@ const Cart = () => {
       ]);
     };
     cart.forEach((item) => {
+      console.log(item);
       getProduct(item);
     });
   }, [cart]);

@@ -16,7 +16,11 @@ const ProductCard = ({ product }: Props) => {
   const addToCartHandler = () => {
     dispatch(
       addProductToCart({
-        productId: product._id,
+        productInfo: {
+          productId: product._id,
+          productName: product.title,
+          productImage: product.styles[style].images[0],
+        },
         styleId: product.styles[style]._id,
       })
     );

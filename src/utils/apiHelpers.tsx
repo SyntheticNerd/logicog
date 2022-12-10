@@ -87,6 +87,7 @@ export const createProduct = async (
   title: string,
   price: string,
   description: string,
+  series: string,
   category: string,
   styles: Style[],
   powerDelivery: string,
@@ -106,6 +107,7 @@ export const createProduct = async (
     title,
     price,
     description,
+    series,
     category,
     styles,
     powerDelivery,
@@ -133,6 +135,7 @@ export const createProduct = async (
           title,
           price,
           description,
+          series,
           category,
           styles,
           powerDelivery,
@@ -181,7 +184,7 @@ export const getProductBtId = async (prodId: string) => {
   }
 };
 
-export const addProductToCartApi = async (prodId: any, styleId: String) => {
+export const addProductToCartApi = async (prodInfo: any, styleId: String) => {
   const sid = localStorage.getItem("sid");
   if (sid) {
     const res = await fetch(
@@ -193,7 +196,7 @@ export const addProductToCartApi = async (prodId: any, styleId: String) => {
         },
         body: JSON.stringify({
           sid: sid,
-          productId: prodId,
+          productInfo: prodInfo,
           styleId: styleId,
         }),
       }

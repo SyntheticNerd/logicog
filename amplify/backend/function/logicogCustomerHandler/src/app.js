@@ -203,7 +203,7 @@ app.post("/customers/add-to-cart", async function (req, res) {
   //I wish i could verrify that the product exists but I dont have access to the Product
   //schema should have done everything under one lambda function
   //TODO move everything to one lambda function
-  const prodId = req.body.productId;
+  const prodInfo = req.body.productInfo;
   const styleId = req.body.styleId;
   //at this point pray we have proper session data
   console.log("CUSTOMER", req.customer);
@@ -211,14 +211,14 @@ app.post("/customers/add-to-cart", async function (req, res) {
   //have to return or else we get a unhandled promise rejection
 
   try {
-    const response = await req.customer.addToCart(prodId, styleId);
+    const response = await req.customer.addToCart(prodInfo, styleId);
     console.log("Past addToCart", res);
     req.session.customer = req.customer;
     store.set(req.body.sid, req.session);
     req.session.destroy();
     return res.json({
       success: "Added item to cart",
-      productId: prodId,
+      productInfo: prodInfo,
       response: response,
       customer: req.customer,
     });

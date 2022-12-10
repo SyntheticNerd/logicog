@@ -8,6 +8,11 @@ export const CreateProductStyled = styled.div`
   align-items: center;
   justify-content: center;
   padding: 3%;
+  a{
+    svg{
+      fill: white;
+    }
+  }
   form {
     width: 80%;
     max-width: 684px;

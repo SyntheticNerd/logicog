@@ -12,7 +12,7 @@ interface CustomerState {
   lastName: String;
   email: String;
   cart: {
-    items: { productId: any; styleId: any; quantity: number; _id?: any }[];
+    items: { productInfo: any; styleId: any; quantity: number; _id?: any }[];
   };
   transactions: any[];
   isLoggedIn: Boolean;
@@ -31,10 +31,10 @@ const mergeCarts = (cartA: any[], cartB: any[]) => {
   const arr = [...cartA, ...cartB];
   const result = Object.values(
     arr.reduce((a, curr) => {
-      if (!a[curr.productId]) {
-        a[curr.productId] = Object.assign({}, curr);
+      if (!a[curr.productInfo.productId]) {
+        a[curr.productInfo.productId] = Object.assign({}, curr);
       } else {
-        a[curr.productId].quantity += curr.quantity;
+        a[curr.productInfo.productId].quantity += curr.quantity;
       }
       return a;
     }, {})
@@ -107,10 +107,10 @@ export const customerSlice = createSlice({
       return initialState;
     },
     addProductToCart: (state, action) => {
-      const { productId, styleId } = action.payload;
+      const { productInfo, styleId } = action.payload;
 
       const cartProductIndex = state.cart.items.findIndex((cp) => {
-        return cp.productId.toString() === productId.toString();
+        return cp.productInfo.productId.toString() === productInfo.productId.toString();
       });
 
       let newQuantity = 1;
@@ -120,7 +120,7 @@ export const customerSlice = createSlice({
         updatedCartItems[cartProductIndex].quantity = newQuantity;
       } else {
         updatedCartItems.push({
-          productId: productId,
+          productInfo: productInfo,
           styleId: styleId,
           quantity: newQuantity,
         });
@@ -131,7 +131,7 @@ export const customerSlice = createSlice({
       state.cart = updatedCart;
       console.log("UPDATED CART in Redux", state.cart);
       if (state.isLoggedIn) {
-        addProductToCartApi(productId, styleId)
+        addProductToCartApi(productInfo, styleId)
           .then((res) => console.log(res))
           .catch((err) => console.log("ERROR", err));
       }
@@ -141,7 +141,7 @@ export const customerSlice = createSlice({
       console.log(productId, newQuantity);
       //find item in cart
       const cartProductIndex = state.cart.items.findIndex((cp) => {
-        return cp.productId.toString() === productId.toString();
+        return cp.productInfo.productId.toString() === productId.toString();
       });
 
       console.log(cartProductIndex);
@@ -153,8 +153,8 @@ export const customerSlice = createSlice({
         //filter out items that are not the item with 0 quantity
         console.log("DELETEING");
         updatedCartItems = updatedCartItems.filter((cartItem) => {
-          console.log(cartItem.productId.toString(), productId.toString());
-          return cartItem.productId.toString() !== productId.toString();
+          console.log(cartItem.productInfo.productId.toString(), productId.toString());
+          return cartItem.productInfo.productId.toString() !== productId.toString();
         });
         console.log(updatedCartItems);
         const updatedCart = {

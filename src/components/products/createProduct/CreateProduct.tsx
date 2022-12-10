@@ -51,6 +51,16 @@ const CreateProduct = () => {
       setDescriptionError("");
     }
   };
+  const [series, setSeries] = useState("");
+  const [seriesError, setSeriesError] = useState<string | null>();
+  const seriesHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSeries(e.target.value);
+    if (e.target.value.length < 1) {
+      setSeriesError("Please enter a Series");
+    } else {
+      setSeriesError("");
+    }
+  };
   const [category, setCategory] = useState("");
   const [categoryError, setCategoryError] = useState<string | null>();
   const categoryHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,6 +208,7 @@ const CreateProduct = () => {
       title,
       price,
       description,
+      series,
       category,
       stylesArray,
       powerDelivery,
@@ -244,6 +255,12 @@ const CreateProduct = () => {
           error={descriptionError}
           label='Description'
           value={description}
+        />
+        <StdInput
+          onChange={seriesHandler}
+          error={seriesError}
+          label='Series'
+          value={series}
         />
         <StdInput
           onChange={categoryHandler}

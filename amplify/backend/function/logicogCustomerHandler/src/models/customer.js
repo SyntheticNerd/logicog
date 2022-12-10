@@ -23,10 +23,20 @@ const customerSchema = new Schema({
   cart: {
     items: [
       {
-        productId: {
-          type: Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
+        productInfo: {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          },
+          productName: {
+            type: String,
+            required: true,
+          },
+          productImage: {
+            type: String,
+            required: true,
+          },
         },
         styleId: {
           type: Schema.Types.ObjectId,
@@ -40,10 +50,20 @@ const customerSchema = new Schema({
     {
       items: [
         {
-          productId: {
-            type: Schema.Types.ObjectId,
-            ref: "Product",
-            required: true,
+          productInfo: {
+            productId: {
+              type: Schema.Types.ObjectId,
+              ref: "Product",
+              required: true,
+            },
+            productName: {
+              type: String,
+              required: true,
+            },
+            productImage: {
+              type: String,
+              required: true,
+            },
           },
           styleId: {
             type: Schema.Types.ObjectId,
@@ -59,9 +79,11 @@ const customerSchema = new Schema({
   ],
 });
 //TODO need an update cart
-customerSchema.methods.addToCart = function (productId, styleId) {
+customerSchema.methods.addToCart = function (productInfo, styleId) {
   const cartProductIndex = this.cart.items.findIndex((cp) => {
-    return cp.productId.toString() === productId.toString();
+    return (
+      cp.productInfo.productId.toString() === productInfo.productId.toString()
+    );
   });
   let newQuantity = 1;
   const updatedCartItems = [...this.cart.items];
@@ -70,7 +92,7 @@ customerSchema.methods.addToCart = function (productId, styleId) {
     updatedCartItems[cartProductIndex].quantity = newQuantity;
   } else {
     updatedCartItems.push({
-      productId: productId,
+      productInfo: productInfo,
       styleId: styleId,
       quantity: newQuantity,
     });
@@ -102,7 +124,7 @@ customerSchema.methods.checkout = function (total) {
 customerSchema.methods.changeQuantity = function (productId, newQuantity) {
   //find item in cart
   const cartProductIndex = this.cart.items.findIndex((cp) => {
-    return cp.productId.toString() === productId.toString();
+    return cp.productInfo.productId.toString() === productId.toString();
   });
   console.log(cartProductIndex);
   let updatedCartItems = [...this.cart.items];
@@ -111,7 +133,7 @@ customerSchema.methods.changeQuantity = function (productId, newQuantity) {
   } else if (newQuantity <= 0) {
     //filter out items that are not the item with 0 quantity
     updatedCartItems = updatedCartItems.filter(
-      (cartItem) => cartItem.productId.toString() !== productId.toString()
+      (cartItem) => cartItem.productInfo.productId.toString() !== productId.toString()
     );
     const updatedCart = {
       items: updatedCartItems,

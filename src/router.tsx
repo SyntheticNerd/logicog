@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import LogIn from "./components/myAccount/logIn/LogIn";
+import MyOrders from "./components/myAccount/MyOrders";
 import SignUp from "./components/myAccount/signUp/SignUp";
 import CreateProduct from "./components/products/createProduct/CreateProduct";
 import ProductsPage from "./components/products/productsPage/ProductsPage";
@@ -14,9 +15,15 @@ export default function Router() {
       <Routes>
         <Route path='/' element={<App />}>
           <Route index element={<Home />} />
-          <Route path='my-account' element={<MyAccount />} />
+          <Route path='my-account' element={<MyAccount />}>
+            <Route path='my-orders' element={<MyOrders />} />
+          </Route>
           <Route path='products' element={<ProductsPage />} />
           <Route path='products/:category' element={<ProductsPage />} />
+          <Route
+            path='products/:category/:productId'
+            element={<ProductsPage />}
+          />
         </Route>
         <Route path='/create-account' element={<SignUp />} />
         <Route path='/login' element={<LogIn />} />

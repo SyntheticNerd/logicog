@@ -7,21 +7,28 @@ export const NavStyled = styled.nav<{ navOpen?: Boolean }>`
   background-color: ${({ navOpen }) =>
     navOpen ? "var(--nav-bg)" : "rgba(0, 0, 0, 0)"};
   width: 100%;
-  height: 80px;
+  height: 98px;
   z-index: 8;
   .nav {
     width: 100%;
     max-width: 1280px;
-    height: 80px;
     color: white;
     padding: 16px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin: auto;
     margin-bottom: -84px;
+
     svg {
       height: 100%;
       justify-self: center;
+    }
+    & > span {
+      width: fit-content;
+      place-self: center;
+      svg {
+        fill: white;
+      }
     }
     .left {
       display: flex;

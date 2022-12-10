@@ -6,15 +6,15 @@ import { ReactComponent as GreenCheckmark } from "../../../images/icons/checkmar
 import { ReactComponent as CreditCardFront } from "../../../images/creditCardFront.svg";
 import { ReactComponent as CreditCardBack } from "../../../images/creditCardBack.svg";
 import { useAppDispatch } from "../../../features/store";
-import {
-  checkoutThunk,
-} from "../../../features/customer/customerSlice";
+import { checkoutThunk } from "../../../features/customer/customerSlice";
+import { useNavigate } from "react-router";
 
 const CheckoutForm = ({ total }: { total: number }) => {
   const [states, setStates] = useState<string[]>(["California", "New York"]);
   const [step, setStep] = useState(1);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [emailInput, setEmailInput] = useState("");
   const [fNameInput, setFNameInput] = useState("");
@@ -66,7 +66,7 @@ const CheckoutForm = ({ total }: { total: number }) => {
     console.log(e.target);
   };
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitPg1Handler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let error = false;
     requiredInputList.forEach((input) => {
@@ -75,7 +75,13 @@ const CheckoutForm = ({ total }: { total: number }) => {
     });
     if (!error) {
       setStep(2);
+      window.scrollTo(0, 0);
     }
+  };
+
+  const submitPg2Handler = () => {
+    dispatch(checkoutThunk(total));
+    navigate("/my-account");
   };
 
   return (
@@ -85,7 +91,7 @@ const CheckoutForm = ({ total }: { total: number }) => {
           action=''
           onChange={formHandler}
           id='checkoutForm'
-          onSubmit={submitHandler}
+          onSubmit={submitPg1Handler}
         >
           <h2>CONTACT INFO</h2>
           {/* -----------------------first line---------------------- */}
@@ -524,13 +530,7 @@ const CheckoutForm = ({ total }: { total: number }) => {
                 </div>
               </div>
             </div>
-            <button
-              onClick={() => {
-                dispatch(checkoutThunk(total));
-              }}
-            >
-              SUBMIT
-            </button>
+            <button onClick={submitPg2Handler}>SUBMIT</button>
           </div>
         </>
       )}

@@ -18,7 +18,7 @@ const Checkout = () => {
     setCartItems([]);
     setTotal(0);
     const getProduct = async (item: any) => {
-      const product = await getProductBtId(item.productId);
+      const product = await getProductBtId(item.productInfo.productId);
       setTotal((prev) => prev + product.price * item.quantity);
       setCartItems((prev: any) => [
         ...prev,

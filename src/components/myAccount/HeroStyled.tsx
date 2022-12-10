@@ -2,7 +2,7 @@ import styled from "styled-components";
 import image from "../../images/banners/myaccount-logitechg.webp";
 
 export const HeroStyled = styled.div`
-  height: 60vh;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,7 +18,7 @@ export const HeroStyled = styled.div`
     color: white;
     font-size: 4em;
   }
-  > div {
+  & > .flex-container {
     display: flex;
     gap: 32px;
 
@@ -56,5 +56,22 @@ export const HeroStyled = styled.div`
     .login {
       background-color: white;
     }
+  }
+  .columnContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    button {
+      background: none;
+      border: none;
+      font-weight: bold;
+      color: lightgray;
+      cursor: pointer;
+    }
+  }
+  .editProfileLink {
+    color: var(--brand-color);
+    font-weight: bold;
+    /* margin */
   }
 `;
