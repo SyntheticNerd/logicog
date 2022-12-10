@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const ProductCardStyled = styled.div`
+export const ProductCardStyled = styled(Link)`
   width: 33.3%;
   height: fit-content;
   padding: 8px;

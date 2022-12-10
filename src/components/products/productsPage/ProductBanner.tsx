@@ -78,6 +78,7 @@ const bannerFileNames: FileNameMap = {
 
 const ProductBanner = ({ category }: { category?: string }) => {
   return (
+    
     <BannerStyled
       backgroundImageFileName={
         category ? bannerFileNames[category].fileName : ""

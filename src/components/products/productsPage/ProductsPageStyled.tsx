@@ -8,7 +8,7 @@ export const BannerStyled = styled.div<{
   height: 55vh;
   background-color: #2a2a2a;
   background-image: ${({ backgroundImageFileName }) =>
-    backgroundImageFileName
+    backgroundImageFileName && backgroundImageFileName !== undefined
       ? `url(${require(`../../../images/banners/${backgroundImageFileName}`)})`
       : ""};
   background-size: cover;

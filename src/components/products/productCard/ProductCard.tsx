@@ -27,7 +27,10 @@ const ProductCard = ({ product }: Props) => {
   };
 
   return (
-    <ProductCardStyled>
+    <ProductCardStyled
+      to={`/products/${product._id}`}
+      onClick={() => console.log(product)}
+    >
       <div className='imageWrapper'>
         <img src={product.styles[style].images[0]} alt={product.title} />
       </div>
