@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../features/store";
 
 import { cartState } from "../features/customer/customerSlice";
-import { getProductBtId } from "../utils/apiHelpers";
+import { getProductById } from "../utils/apiHelpers";
 import { Link } from "react-router-dom";
 import { CheckoutStyled, TopBar } from "./CheckoutStyled";
 import CheckoutForm from "../components/checkout/checkoutForm/CheckoutForm";
@@ -18,7 +18,7 @@ const Checkout = () => {
     setCartItems([]);
     setTotal(0);
     const getProduct = async (item: any) => {
-      const product = await getProductBtId(item.productInfo.productId);
+      const product = await getProductById(item.productInfo.productId);
       setTotal((prev) => prev + product.price * item.quantity);
       setCartItems((prev: any) => [
         ...prev,

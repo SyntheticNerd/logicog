@@ -87,6 +87,7 @@ export const CartStyled = styled.div`
     .cartList {
       color: white;
       padding: 12px;
+      overflow: scroll;
     }
     .total {
       color: white;

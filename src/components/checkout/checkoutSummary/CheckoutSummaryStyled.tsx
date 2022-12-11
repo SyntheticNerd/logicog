@@ -72,9 +72,10 @@ export const CheckoutSummaryStyled = styled.div`
 export const SummaryItemStyled = styled.li`
   display: flex;
   gap: 20px;
+  margin-bottom: 20px;
   .left {
     height: 78px;
-    width: 78px;
+    min-width: 78px;
     border-radius: 4px;
     border: 1px solid lightgray;
     position: relative;

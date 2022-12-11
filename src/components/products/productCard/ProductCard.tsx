@@ -4,6 +4,7 @@ import { ProductCardStyled } from "./ProductCardStyled";
 import { ReactComponent as CartIcon } from "../../../images/icons/cart.svg";
 import { addProductToCart } from "../../../features/customer/customerSlice";
 import { useAppDispatch } from "../../../features/store";
+import { useNavigate } from "react-router";
 
 interface Props {
   product: Product;
@@ -12,8 +13,10 @@ interface Props {
 const ProductCard = ({ product }: Props) => {
   const [style, setStyle] = useState(0);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const addToCartHandler = () => {
+  const addToCartHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     dispatch(
       addProductToCart({
         productInfo: {
@@ -28,8 +31,8 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <ProductCardStyled
-      to={`/products/${product._id}`}
-      onClick={() => console.log(product)}
+      // to={`/products/${product.category}/${product._id}`}
+      onClick={() => navigate(`/products/${product.category}/${product._id}`)}
     >
       <div className='imageWrapper'>
         <img src={product.styles[style].images[0]} alt={product.title} />
@@ -48,7 +51,7 @@ const ProductCard = ({ product }: Props) => {
                       backgroundColor: _style.color,
                       borderWidth: style === i ? "3px" : "2px",
                     }}
-                    onClick={() => setStyle(i)}
+                    onClick={(e) => setStyle(i)}
                   />
                 ))}
               </div>

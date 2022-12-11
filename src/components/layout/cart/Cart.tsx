@@ -5,7 +5,7 @@ import { cartOpen, closeCart } from "../../../features/ui/uiSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactComponent as CheckMark } from "../../../images/icons/checkmark.svg";
 import { cartState } from "../../../features/customer/customerSlice";
-import { getProductBtId } from "../../../utils/apiHelpers";
+import { getProductById } from "../../../utils/apiHelpers";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router";
 
@@ -25,7 +25,7 @@ const Cart = () => {
     setCartItems([]);
     setTotal(0);
     const getProduct = async (item: any) => {
-      const product = await getProductBtId(item.productInfo.productId);
+      const product = await getProductById(item.productInfo.productId);
       setTotal((prev) => prev + product.price * item.quantity);
       setCartItems((prev: any) => [
         ...prev,

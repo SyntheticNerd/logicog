@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const CartItemStyled = styled.div`
   display: flex;
+  margin-bottom: 12px;
   img {
     height: 120px;
     width: 120px;

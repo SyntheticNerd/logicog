@@ -4,6 +4,7 @@ import LogIn from "./components/myAccount/logIn/LogIn";
 import MyOrders from "./components/myAccount/MyOrders";
 import SignUp from "./components/myAccount/signUp/SignUp";
 import CreateProduct from "./components/products/createProduct/CreateProduct";
+import ProductDetails from "./components/products/productsPage/ProductDetails";
 import ProductsPage from "./components/products/productsPage/ProductsPage";
 import Checkout from "./pages/Checkout";
 import Home from "./pages/Home";
@@ -19,11 +20,9 @@ export default function Router() {
             <Route path='my-orders' element={<MyOrders />} />
           </Route>
           <Route path='products' element={<ProductsPage />} />
-          <Route path='products/:category' element={<ProductsPage />} />
-          <Route
-            path='products/:category/:productId'
-            element={<ProductsPage />}
-          />
+          <Route path='products/:category' element={<ProductsPage />}>
+            <Route path=':productId' element={<ProductDetails />} />
+          </Route>
         </Route>
         <Route path='/create-account' element={<SignUp />} />
         <Route path='/login' element={<LogIn />} />

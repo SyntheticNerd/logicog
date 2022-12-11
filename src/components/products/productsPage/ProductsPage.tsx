@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { getAllProducts } from "../../../utils/apiHelpers";
+import { getAllProducts, getProductById } from "../../../utils/apiHelpers";
 import { Product } from "../../../utils/types";
 import ProductCard from "../productCard/ProductCard";
 import ProductControlBoard from "../ProductControlBoard";
 import ProductBanner from "./ProductBanner";
-import { useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
+import ProductDetails from "./ProductDetails";
 
 const ProductsPage = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
-  // const [productPg, setProductPg] = useState(true);
-  const { category } = useParams();
+  const { category, productId } = useParams();
 
   const categories = {
     mice: true,
     "gaming-mice": true,
   };
 
-  console.log(category, category! in categories);
-  const productPg = !(category! in categories);
 
   useEffect(() => {
-    console.log(productPg);
     console.log(category! in categories);
-    if (category && !productPg) {
+    if (!productId) {
       setLoading(true);
       getAllProducts().then((data) => {
         console.log(data);
@@ -39,16 +36,22 @@ const ProductsPage = () => {
     }
   }, [category]);
 
-  if (productPg) {
-    return <div>true</div>;
-  } else {
-    return (
-      <div>
-        <ProductBanner category={category} />
-        {loading ? <p>Loading</p> : <ProductControlBoard products={products} />}
-      </div>
-    );
-  }
+  return (
+    <div>
+      {productId ? (
+        <Outlet />
+      ) : (
+        <>
+          <ProductBanner category={category} />
+          {loading ? (
+            <p>Loading</p>
+          ) : (
+            <ProductControlBoard products={products} />
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ProductsPage;
