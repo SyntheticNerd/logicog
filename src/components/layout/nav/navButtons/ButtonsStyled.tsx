@@ -63,3 +63,19 @@ export const NavBtnStyled = styled.button<{ navOpen?: Boolean }>`
     }
   }
 `;
+
+export const SearchBtnStyled = styled.button`
+  background: none;
+  border: none;
+  outline: none;
+  margin-left: 20px;
+  svg {
+    fill: rgba(255, 255, 255, 0.5);
+    width: 31px;
+  }
+  &:hover {
+    svg {
+      fill: white;
+    }
+  }
+`;

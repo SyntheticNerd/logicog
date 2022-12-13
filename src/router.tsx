@@ -18,15 +18,16 @@ export default function Router() {
           <Route index element={<Home />} />
           <Route path='my-account' element={<MyAccount />}>
             <Route path='my-orders' element={<MyOrders />} />
+            <Route path='create-product' element={<CreateProduct />} />
           </Route>
           <Route path='products' element={<ProductsPage />} />
           <Route path='products/:category' element={<ProductsPage />}>
             <Route path=':productId' element={<ProductDetails />} />
+            <Route path=':productId/:style' element={<ProductDetails />} />
           </Route>
         </Route>
         <Route path='/create-account' element={<SignUp />} />
         <Route path='/login' element={<LogIn />} />
-        <Route path='/create-product' element={<CreateProduct />} />
         <Route path='/checkout' element={<Checkout />} />
       </Routes>
     </BrowserRouter>

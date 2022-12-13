@@ -6,6 +6,9 @@ import IconSlide from "./slides/IconSlide";
 import LogidaySlide from "./slides/LogidaySlide";
 import LogiplaySlide from "./slides/LogiplaySlide";
 import UnleashSlide from "./slides/UnleashSlide";
+import { motion } from "framer-motion";
+
+import { ReactComponent as Gear } from "../../../images/fullGear.svg";
 
 import { HeroSlideShowStyled } from "./HeroSlideShowStyled";
 
@@ -64,7 +67,18 @@ const HeroSlideShow = () => {
         onMouseEnter={() => setPeakLeft(true)}
         onMouseLeave={() => setPeakLeft(false)}
       >
-        left
+        <motion.div
+          animate={{ rotate: peakLeft ? "-360deg" : "0" }}
+          transition={{
+            repeat: Infinity,
+            duration: 1,
+            ease: "linear",
+          }}
+        >
+          <Gear />
+        </motion.div>
+
+        <b>◄</b>
       </button>
       <div ref={scrollRef} className='scrollableArea'>
         {" "}
@@ -95,7 +109,17 @@ const HeroSlideShow = () => {
         onMouseEnter={() => setPeakRight(true)}
         onMouseLeave={() => setPeakRight(false)}
       >
-        right
+        <motion.div
+          animate={{ rotate: peakRight ? "360deg" : "0" }}
+          transition={{
+            repeat: Infinity,
+            duration: 1,
+            ease: "linear",
+          }}
+        >
+          <Gear />
+        </motion.div>
+        <b>►</b>
       </button>
     </HeroSlideShowStyled>
   );

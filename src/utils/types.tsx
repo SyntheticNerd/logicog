@@ -11,6 +11,7 @@ export interface Product {
   title: string;
   price: string;
   description: string;
+  series: string;
   category: string;
   styles: Style[];
   powerDelivery: string;

@@ -1,14 +1,30 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-export const NavStyled = styled.nav<{ navOpen?: Boolean }>`
-  position: absolute;
-  transition: background-color 0.5s;
-  background-color: ${({ navOpen }) =>
-    navOpen ? "var(--nav-bg)" : "rgba(0, 0, 0, 0)"};
+export const NavStyled = styled(motion.nav)<{
+  navOpen?: Boolean;
+  peak?: Boolean;
+  top?: Boolean;
+}>`
+  position: ${({ peak, navOpen, top }) =>
+    peak || !top ? "fixed" : "absolute"};
+  z-index: 5 !important;
+  ${({ top }) =>
+    !top &&
+    `
+      top: 0px;
+    `}
+  transition: all 0.5s;
+  background-color: ${({ navOpen, peak }) =>
+    navOpen
+      ? "var(--nav-bg)"
+      : peak
+      ? "rgba(48, 48, 48, 0.9)"
+      : "rgba(0, 0, 0, 0)"};
   width: 100%;
   height: 98px;
   z-index: 8;
+
   .nav {
     width: 100%;
     max-width: 1280px;
@@ -18,7 +34,6 @@ export const NavStyled = styled.nav<{ navOpen?: Boolean }>`
     grid-template-columns: repeat(3, 1fr);
     margin: auto;
     margin-bottom: -84px;
-
     svg {
       height: 100%;
       justify-self: center;
@@ -43,9 +58,10 @@ export const NavStyled = styled.nav<{ navOpen?: Boolean }>`
 `;
 
 export const NavMenuStyled = styled(motion.div)`
-  position: absolute;
+  position: fixed;
   height: 100vh;
   width: 100%;
+  top: 0;
 
   background-color: #f4f4f4;
   z-index: 4;

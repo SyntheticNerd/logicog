@@ -17,6 +17,8 @@ interface Style {
 const CreateProduct = () => {
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState<string | null>();
   const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,6 +195,7 @@ const CreateProduct = () => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
     console.log("Submitting");
     if (
       titleError ||
@@ -223,18 +226,44 @@ const CreateProduct = () => {
       reqArray,
       platformArray,
       inBoxArray
-    ).then((res) => {
-      console.log(res);
-      console.log("Created");
-      navigate("/create-product");
-    });
+    )
+      .then((res) => {
+        console.log(res);
+        console.log("Created");
+        setTitle("");
+        setPrice("");
+        setDescription("");
+        setSeries("");
+        setCategory("");
+        setStylesArray([]);
+        setPowerDelivery("");
+        setWeight("");
+        setHeight("");
+        setWidth("");
+        setDepth("");
+        setWarranty("");
+        setPrimSpec("");
+        setPrimSpecArray([]);
+        setTechSpec("");
+        setTechSpecArray([]);
+        setTracking("");
+        setTrackingArray([]);
+        setReq("");
+        setReqArray([]);
+        setPlatform("");
+        setPlatformArray([]);
+        setInBox("");
+        setInBoxArray([]);
+        setLoading(false);
+      })
+      .catch(() => {
+        console.log("PRODUCT NOT CREATED");
+        setLoading(false);
+      });
   };
 
   return (
     <CreateProductStyled>
-      <Link to='/'>
-        <Logo />
-      </Link>
       <h1>Create Product</h1>
       <p>Complete all fields to create a product</p>
       <form onSubmit={submitHandler}>

@@ -16,6 +16,12 @@ export const ControlBoardStyled = styled.div`
       flex-grow: 1;
     }
   }
+  .loadingWrapper {
+    background-color: #f4f4f4;
+    width: 100%;
+    display: grid;
+    place-items: center;
+  }
 `;
 
 export const FiltersStyled = styled.div`

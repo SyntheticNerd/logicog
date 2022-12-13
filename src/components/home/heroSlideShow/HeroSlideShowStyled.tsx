@@ -37,6 +37,31 @@ export const HeroSlideShowStyled = styled.div`
     padding: 20px;
     transform: translateY(-50%);
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 32px;
+    & > div {
+      height: 80%;
+      width: 80%;
+
+      position: absolute;
+      svg {
+        fill: rgba(255, 255, 255, 0.7);
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    b {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.9);
+    }
   }
   .right {
     position: absolute;
@@ -45,5 +70,31 @@ export const HeroSlideShowStyled = styled.div`
     padding: 20px;
     transform: translateY(-50%);
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 32px;
+    
+    & > div {
+      height: 80%;
+      width: 80%;
+
+      position: absolute;
+      svg {
+        fill: rgba(255, 255, 255, 0.7);
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    b {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.9);
+    }
   }
 `;

@@ -107,6 +107,8 @@ export const CartStyled = styled.div`
       margin: 12px;
       padding: 20px;
       border-radius: 4px;
+      display: flex;
+      justify-content: center;
     }
   }
 `;

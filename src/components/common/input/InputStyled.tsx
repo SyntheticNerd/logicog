@@ -20,7 +20,7 @@ export const CollapsibleInput = styled.div<{ collapse?: boolean }>`
       background: none;
       border: none;
       outline: none;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
       color: white;
       font-size: 20px;
       font-weight: medium;
@@ -36,7 +36,7 @@ export const CollapsibleInput = styled.div<{ collapse?: boolean }>`
       border: none;
       outline: none;
       svg {
-        fill: rgba(255, 255, 255, 0.5);
+        fill: rgba(0, 0, 0, 0.5);
         &:hover {
           fill: white;
         }

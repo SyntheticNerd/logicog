@@ -3,6 +3,7 @@ import { useAppSelector } from "../../features/store";
 
 import { customerState } from "../../features/customer/customerSlice";
 import { Link } from "react-router-dom";
+import { MyOrdersStyled } from "./MyOrdersStyled";
 
 type Props = {};
 const MyOrders = (props: Props) => {
@@ -17,26 +18,41 @@ const MyOrders = (props: Props) => {
     );
   }
   return (
-    <div>
-      {customer.transactions.map((transaction) => (
-        <div>
-          <h4>Transaction Number: {transaction._id}</h4>
-          <p>Date of transaction: {transaction.date}</p>
-          <b>Total: {transaction.total}</b>
-
-          {/* {JSON.stringify(transaction)} */}
-          <ul>
-            {transaction.items.map((item: any) => (
-              <li>
-                <img src={item.productInfo.productImage} alt='' />
-                <p>{item.productInfo.productName}</p>
-                <b>{item.quantity}</b>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+    <MyOrdersStyled>
+      {customer.transactions.length > 0 ? (
+        customer.transactions.map((transaction) => (
+          <div className='transactionSummary'>
+            <h4>Transaction Number: {transaction._id}</h4>
+            <b>Items</b>
+            <ul>
+              {transaction.items.map((item: any) => (
+                <li>
+                  <img src={item.productInfo.productImage} alt='' />
+                  <b>{item.quantity}</b>
+                  <p>{item.productInfo.productName}</p>
+                </li>
+              ))}
+            </ul>
+            <p className='transactionDate'>
+              <b>Date of transaction:</b>{" "}
+              {new Date(transaction.date).toLocaleString("en-US", {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+            <b>Total: {transaction.total}</b>
+            <button className='returnReq'>START RETURN</button>
+          </div>
+        ))
+      ) : (
+        <h4>
+          You do not have any transactions associated with this account.{" "}
+          <Link to='/'>Start Shopping</Link>
+        </h4>
+      )}
+    </MyOrdersStyled>
   );
 };
 

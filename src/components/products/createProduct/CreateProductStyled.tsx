@@ -1,15 +1,19 @@
 import styled from "styled-components";
 export const CreateProductStyled = styled.div`
-  background-color: black;
   min-height: 100vh;
-  color: white;
+  width: 100%;
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3%;
-  a{
-    svg{
+  /* padding: 3%; */
+  input {
+    color: black !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2) !important;
+  }
+  a {
+    svg {
       fill: white;
     }
   }
@@ -21,7 +25,7 @@ export const CreateProductStyled = styled.div`
     align-items: center;
     gap: 32px;
     margin-top: 32px;
-    color: rgba(255, 255, 255, 0.5);
+    color: black;
     & > button {
       width: 100%;
       background: none;
@@ -35,31 +39,44 @@ export const CreateProductStyled = styled.div`
     }
   }
   a {
-    color: white;
+    color: black;
     font-weight: bold;
     margin-top: 20px;
   }
   .styleContainer {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 32px;
     border-radius: 10px;
     gap: 16px;
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
+    button {
+      width: 100%;
+      background: none;
+      background-color: var(--brand-color);
+      border: none;
+      outline: none;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+    }
   }
-  .previewImg{
+  .previewImg {
     height: 80px;
     width: 80px;
   }
-  .imgDeleteBox{
+  .imgDeleteBox {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 8px;
     width: fit-content;
   }
-  .imgSelections{
+  .imgSelections {
     display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
   }
 `;

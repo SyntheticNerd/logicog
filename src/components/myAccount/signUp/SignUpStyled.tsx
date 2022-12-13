@@ -8,6 +8,19 @@ export const SignUpStyled = styled.div`
   align-items: center;
   justify-content: center;
   padding: 3%;
+  .loadingWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 17px;
+    &>div{
+      position: absolute;
+      height: 40px;
+    }
+  }
+  svg {
+    fill: white;
+  }
   form {
     width: 80%;
     max-width: 684px;
@@ -35,5 +48,3 @@ export const SignUpStyled = styled.div`
     margin-top: 20px;
   }
 `;
-
-

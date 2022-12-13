@@ -11,12 +11,12 @@ export const ProductCardStyled = styled.div`
     background-color: rgba(47, 49, 50, 0.1);
 
     img {
-      padding: 60px;
+      padding: 32px;
       position: absolute;
       top: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
   }
   .styleSelection {

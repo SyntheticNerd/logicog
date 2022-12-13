@@ -5,8 +5,10 @@ export const SmoothSliderStyled = styled.div`
   max-width: 1280px;
   margin: auto;
   padding: 120px 0px;
+  z-index: 2;
   .slick-slider {
     height: 285px;
+    position: relative;
   }
   .slick-arrow {
     position: absolute !important;

@@ -34,15 +34,18 @@ const TopBar = () => {
           <Link to='my-account' className='icon-container'>
             <AccountIcon /> MY ACCOUNT
           </Link>
-          <hr />
-          <button
-            className='icon-container'
-            onClick={() => dispatch(logout(null))}
-          >
-            LOG OUT
-          </button>
-          <hr />
-          <Link to='create-product'>Create Product</Link>
+
+          {isLoggedIn && (
+            <>
+              <hr />
+              <button
+                className='icon-container'
+                onClick={() => dispatch(logout(null))}
+              >
+                LOG OUT
+              </button>
+            </>
+          )}
         </div>
       </div>
     </TopBarStyled>

@@ -17,9 +17,9 @@ const ProductsPage = () => {
     "gaming-mice": true,
   };
 
-
   useEffect(() => {
     console.log(category! in categories);
+    window.scrollTo(0, 0);
     if (!productId) {
       setLoading(true);
       getAllProducts().then((data) => {
@@ -34,7 +34,7 @@ const ProductsPage = () => {
         setLoading(false);
       });
     }
-  }, [category]);
+  }, [category, productId]);
 
   return (
     <div>
@@ -43,11 +43,7 @@ const ProductsPage = () => {
       ) : (
         <>
           <ProductBanner category={category} />
-          {loading ? (
-            <p>Loading</p>
-          ) : (
-            <ProductControlBoard products={products} />
-          )}
+          <ProductControlBoard products={products} loading={loading} />
         </>
       )}
     </div>

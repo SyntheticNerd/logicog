@@ -169,13 +169,6 @@ export const getAllProducts = async () => {
   const data = await res.json();
   return data;
 };
-// export const getProductById = async (productId: string) => {
-//   const res = await fetch(
-//     `https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/products/${productId}`
-//   );
-//   const data = await res.json();
-//   return data;
-// };
 
 export const getProductById = async (prodId: string) => {
   console.log(prodId);

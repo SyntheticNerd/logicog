@@ -8,6 +8,9 @@ export const LogInStyled = styled.div`
   align-items: center;
   justify-content: center;
   padding: 3%;
+  svg {
+    fill: white;
+  }
   form {
     width: 80%;
     max-width: 684px;
@@ -34,6 +37,13 @@ export const LogInStyled = styled.div`
     font-weight: bold;
     margin-top: 20px;
   }
+  .loadingWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 19px;
+    & > div {
+      position: absolute;
+    }
+  }
 `;
-
-

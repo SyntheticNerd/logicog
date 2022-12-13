@@ -5,10 +5,11 @@ import { createCustomer, loginCustomer } from "../../../utils/apiHelpers";
 import { validatePw, validateEmail } from "../../../utils/validation";
 import { LogInStyled } from "./LogInStyled";
 import StdInput from "../../common/input/StdInput";
+import Loading from "../../layout/Loading";
 
 const LogIn = () => {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>();
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +36,22 @@ const LogIn = () => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    loginCustomer(email, password).then((res) => {
-      console.log(res);
-      navigate("/my-account");
-    });
+    setLoading(true);
+    loginCustomer(email, password)
+      .then((res) => {
+        console.log(res);
+        if (res.error) {
+          setLoading(false);
+          setEmailError("Please enter a valid email and password");
+        } else {
+          setLoading(false);
+          navigate("/my-account");
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        setEmailError("Please enter a valid email");
+      });
     // createUser( email, password).then(() => {
     //   navigate("/my-account");
     // });
@@ -46,7 +59,9 @@ const LogIn = () => {
 
   return (
     <LogInStyled>
-      <Logo />
+      <Link to='/'>
+        <Logo />
+      </Link>
       <h1>LOGIN TO YOUR ACCOUNT</h1>
       <form onSubmit={submitHandler}>
         <StdInput
@@ -62,9 +77,17 @@ const LogIn = () => {
           error={pwError}
           label='Password'
         />
-        <button>LOGIN</button>
+        <button>
+          {loading ? (
+            <div className='loadingWrapper'>
+              <Loading height='40px' width='40px' color='black !important' />
+            </div>
+          ) : (
+            "LOGIN"
+          )}
+        </button>
       </form>
-      <Link to='/sign-up'>CREATE ACCOUNT</Link>
+      <Link to='/create-account'>CREATE ACCOUNT</Link>
     </LogInStyled>
   );
 };

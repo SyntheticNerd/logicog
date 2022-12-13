@@ -7,19 +7,36 @@ import NavMenu from "./NavMenu";
 import { NavStyled } from "./NavStyled";
 import { AnimatePresence } from "framer-motion";
 import { useAppSelector } from "../../../features/store";
-import { navOpenState } from "../../../features/ui/uiSlice";
+import {
+  navOpenState,
+  peakState,
+  topState,
+} from "../../../features/ui/uiSlice";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   const navOpen = useAppSelector(navOpenState);
+  const peak = useAppSelector(peakState);
+  const top = useAppSelector(topState);
   return (
     <>
-      <NavStyled navOpen={navOpen}>
+      <NavStyled
+        navOpen={navOpen}
+        peak={peak && !navOpen}
+        top={top}
+        animate={{
+          transform:
+            peak || top || navOpen ? "translateY(0)" : "translateY(-100%)",
+        }}
+      >
         <div className='nav'>
           <div className='left'>
             <NavBtn />
           </div>
           <span>
-            <Logo />
+            <Link to='/'>
+              <Logo />
+            </Link>
           </span>
           <div className='right'>
             <CartBtn />

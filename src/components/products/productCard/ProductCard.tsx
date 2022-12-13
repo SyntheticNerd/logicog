@@ -32,13 +32,15 @@ const ProductCard = ({ product }: Props) => {
   return (
     <ProductCardStyled
       // to={`/products/${product.category}/${product._id}`}
-      onClick={() => navigate(`/products/${product.category}/${product._id}`)}
+      onClick={() =>
+        navigate(`/products/${product.category}/${product._id}/${style}`)
+      }
     >
       <div className='imageWrapper'>
         <img src={product.styles[style].images[0]} alt={product.title} />
       </div>
       <div className='contentWrapper'>
-        <strong>G SERIES</strong>
+        <strong>{product.series.toUpperCase()}</strong>
         <div>
           <h3>{product.title}</h3>
           {product.styles.length > 1 ? (
@@ -51,7 +53,10 @@ const ProductCard = ({ product }: Props) => {
                       backgroundColor: _style.color,
                       borderWidth: style === i ? "3px" : "2px",
                     }}
-                    onClick={(e) => setStyle(i)}
+                    onClick={(e) => {
+                      setStyle(i);
+                      e.stopPropagation();
+                    }}
                   />
                 ))}
               </div>

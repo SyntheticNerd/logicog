@@ -10,11 +10,14 @@ export const AccountWrapper = styled.div`
 
 export const AccountOverviewStyled = styled.div<{ outletActive?: Boolean }>`
   width: ${({ outletActive }) => (outletActive ? "fit-content" : "100%")};
-  display: grid;
-  grid-template-columns: ${({ outletActive }) =>
-    outletActive ? "1fr" : "repeat(3, 1fr)"};
-  justify-content: center;
+  display: flex;
+  flex-direction: ${({ outletActive }) => (outletActive ? "column" : "row")};
+  justify-content: ${({ outletActive }) =>
+    outletActive ? "flex-start" : "space-between"};
   text-align: ${({ outletActive }) => (outletActive ? "left" : "center")};
+  & > div {
+    height: fit-content;
+  }
   h3 {
     margin-bottom: 20px;
     font-size: 32px;

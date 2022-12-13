@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ArrowIcon from "../../images/icons/ArrowIcon";
 import { Product } from "../../utils/types";
+import Loading from "../layout/Loading";
 import {
   ControlBarStyled,
   ControlBoardStyled,
@@ -12,6 +13,7 @@ import ProductCard from "./productCard/ProductCard";
 
 interface Props {
   products: Product[];
+  loading: Boolean;
 }
 
 const filterList = [
@@ -43,7 +45,7 @@ const filterList = [
   },
 ];
 
-const ProductControlBoard = ({ products }: Props) => {
+const ProductControlBoard = ({ products, loading }: Props) => {
   const [hideFilters, setHideFilters] = useState(false);
   const [sortBy, setSortBy] = useState("new");
   const [appliedFilters, setAppliedFilters] = useState<String[]>([]);
@@ -96,12 +98,17 @@ const ProductControlBoard = ({ products }: Props) => {
             ))}
           </FiltersStyled>
         )}
-
-        <div className='productSection'>
-          {products.map((product) => (
-            <ProductCard key={product._id.toString()} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <div className='loadingWrapper'>
+            <Loading color='var(--brand-color)' />
+          </div>
+        ) : (
+          <div className='productSection'>
+            {products.map((product) => (
+              <ProductCard key={product._id.toString()} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </ControlBoardStyled>
   );
