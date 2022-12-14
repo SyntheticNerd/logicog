@@ -6,6 +6,10 @@ export const CartBtnStyled = styled.button`
   position: relative;
   svg {
     stroke: rgba(255, 255, 255, 0.5);
+    @media (max-width: 1004px) {
+      height: 18px;
+      width: 18px;
+    }
   }
   &:hover {
     svg {
@@ -32,16 +36,16 @@ export const NavBtnStyled = styled.button<{ navOpen?: Boolean }>`
   border: none;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: min(12%, 4px);
   align-items: center;
   justify-content: center;
-  width: 23px;
+  width: max(18px, min(23px, 2vw));
   position: relative;
   div {
     background-color: rgba(255, 255, 255, 0.5);
     width: 100%;
-    height: 3px;
-    border-radius: 3px;
+    height: 6%;
+    border-radius: 20%;
     transition: transform 0.3s;
   }
   .line1 {
@@ -72,6 +76,10 @@ export const SearchBtnStyled = styled.button`
   svg {
     fill: rgba(255, 255, 255, 0.5);
     width: 31px;
+    @media (max-width: 1004px) {
+      height: 18px;
+      width: 18px;
+    }
   }
   &:hover {
     svg {

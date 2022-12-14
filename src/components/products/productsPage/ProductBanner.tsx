@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { JsxElement } from "typescript";
 
 interface FileNameMap {
-  [key: string]: { excerpt: any; fileName: string };
+  [key: string]: { excerpt: any; fileName: string; mobileFileName?: string };
 }
 
 const bannerFileNames: FileNameMap = {
@@ -12,6 +12,7 @@ const bannerFileNames: FileNameMap = {
     excerpt:
       "Logitech G develops award-winning wireless and wired gaming mice. Constantly innovating from sensors to shape, find the right one for you.",
     fileName: "plp-mice-hero-desktop-2.webp",
+    mobileFileName: `https://resource.logitechg.com/w_719,ar_9:16,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/gaming/en/plp-mice/plp-mice-hero-mobile.png?v=1`,
   },
   "gaming-mouse-pads": {
     excerpt: (
@@ -24,6 +25,8 @@ const bannerFileNames: FileNameMap = {
       </>
     ),
     fileName: "plp-mousepads-hero-desktop.webp",
+    mobileFileName:
+      "https://resource.logitechg.com/w_719,ar_9:16,c_limit,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/gaming/en/plp-mousepads/plp-mousepads-hero-mobile.png?v=1",
   },
   "gaming-keyboards": {
     excerpt:
@@ -78,10 +81,14 @@ const bannerFileNames: FileNameMap = {
 
 const ProductBanner = ({ category }: { category?: string }) => {
   return (
-    
     <BannerStyled
       backgroundImageFileName={
         category ? bannerFileNames[category].fileName : ""
+      }
+      mobileBackgroundFileName={
+        category && bannerFileNames[category].mobileFileName
+          ? bannerFileNames[category].mobileFileName
+          : ""
       }
       category={category ? category : ""}
     >

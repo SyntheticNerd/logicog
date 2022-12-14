@@ -9,7 +9,7 @@ export const FooterStyled = styled.footer`
   background-color: #f4f4f4;
   .contentWrapper {
     width: 100%;
-    max-width: 1220px;
+    max-width: 1280px;
     /* outline: 2px solid green; */
     padding: 60px 0px;
     .top {

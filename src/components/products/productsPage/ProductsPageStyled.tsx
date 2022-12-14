@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const BannerStyled = styled.div<{
   backgroundImageFileName?: string;
+  mobileBackgroundFileName?: string;
   category?: string;
 }>`
   height: 55vh;
@@ -13,6 +14,15 @@ export const BannerStyled = styled.div<{
       : ""};
   background-size: cover;
   background-position: center;
+  @media (max-width: 840px) {
+    height: fit-content;
+    background-size: 100%;
+    background-position: center;
+    background-image: ${({ mobileBackgroundFileName }) =>
+      mobileBackgroundFileName && mobileBackgroundFileName !== undefined
+        ? `url(${mobileBackgroundFileName})`
+        : ""};
+  }
   .contentWrapper {
     width: 100%;
     max-width: 1280px;
@@ -21,8 +31,16 @@ export const BannerStyled = styled.div<{
     padding: 0px 32px;
     display: flex;
     align-items: center;
+    @media (max-width: 840px) {
+      align-items: flex-end;
+    }
     .grid {
       width: 33%;
+      @media (max-width: 840px) {
+        width: 100%;
+        margin-top: 40vh;
+        margin-bottom: 64px;
+      }
       color: ${({ category }) =>
         category && category === "accessories"
           ? "rgba(0, 0, 0, 0.8)"

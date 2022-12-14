@@ -78,6 +78,7 @@ const customerSchema = new Schema({
     },
   ],
 });
+
 //TODO need an update cart
 customerSchema.methods.addToCart = function (productInfo, styleId) {
   const cartProductIndex = this.cart.items.findIndex((cp) => {

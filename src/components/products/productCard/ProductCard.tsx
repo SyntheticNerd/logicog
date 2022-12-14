@@ -5,6 +5,7 @@ import { ReactComponent as CartIcon } from "../../../images/icons/cart.svg";
 import { addProductToCart } from "../../../features/customer/customerSlice";
 import { useAppDispatch } from "../../../features/store";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 interface Props {
   product: Product;
@@ -31,18 +32,23 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <ProductCardStyled
-      // to={`/products/${product.category}/${product._id}`}
-      onClick={() =>
-        navigate(`/products/${product.category}/${product._id}/${style}`)
-      }
+    // to={`/products/${product.category}/${product._id}`}
+    // onClick={() =>
+    //   navigate(`/products/${product.category}/${product._id}/${style}`)
+    // }
     >
-      <div className='imageWrapper'>
+      <Link
+        to={`/products/${product.category}/${product._id}`}
+        className='imageWrapper'
+      >
         <img src={product.styles[style].images[0]} alt={product.title} />
-      </div>
+      </Link>
       <div className='contentWrapper'>
         <strong>{product.series.toUpperCase()}</strong>
         <div>
-          <h3>{product.title}</h3>
+          <Link to={`/products/${product.category}/${product._id}`}>
+            <h3>{product.title}</h3>
+          </Link>
           {product.styles.length > 1 ? (
             product.styles[0].color ? (
               <div className='styleSelection'>

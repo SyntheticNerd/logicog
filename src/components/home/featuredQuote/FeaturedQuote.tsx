@@ -8,17 +8,29 @@ import { ReactComponent as Instagram } from "../../../images/icons/social/instag
 
 const FeaturedQuoteStyled = styled.div`
   background-color: #f4f4f4;
-  height: 100vh;
   max-height: 500px;
   position: relative;
   display: grid;
   place-items: center;
+  padding: 0px 32px;
+  @media (max-width: 1080px) {
+    max-height: fit-content;
+  }
   .contentWrapper {
     height: 100%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
+    overflow: hidden;
+    @media (max-width: 1080px) {
+      flex-direction: column-reverse;
+      gap: 32px;
+      padding: 40px 0px;
+    }
     blockquote {
       width: 490px;
+      max-width: 80vw;
       font-weight: bold;
       font-size: 20px;
       position: relative;
@@ -30,6 +42,11 @@ const FeaturedQuoteStyled = styled.div`
         top: 0px;
         transform: translateY(-60%);
         font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      }
+    }
+    .theImage {
+      @media (max-width: 1080px) {
+        height: 500px;
       }
     }
     img {
@@ -55,40 +72,40 @@ const FeaturedQuoteStyled = styled.div`
         svg {
           fill: rgba(0, 0, 0, 0.4);
         }
-        &:hover{
-            svg{
-                fill: rgba(12, 117, 187, 0.8)
-            }
+        &:hover {
+          svg {
+            fill: rgba(12, 117, 187, 0.8);
+          }
         }
       }
       .facebook {
         svg {
           fill: rgba(0, 0, 0, 0.4);
         }
-        &:hover{
-            svg{
-                fill: rgba(0, 66, 141, 0.8)
-            }
+        &:hover {
+          svg {
+            fill: rgba(0, 66, 141, 0.8);
+          }
         }
       }
       .youtube {
         svg {
           fill: rgba(0, 0, 0, 0.4);
         }
-        &:hover{
-            svg{
-                fill: rgba(216, 0, 0, 0.8)
-            }
+        &:hover {
+          svg {
+            fill: rgba(216, 0, 0, 0.8);
+          }
         }
       }
       .instagram {
         svg {
           fill: rgba(0, 0, 0, 0.4);
         }
-        &:hover{
-            svg{
-                fill: rgba(202, 60, 190, 0.8)
-            }
+        &:hover {
+          svg {
+            fill: rgba(202, 60, 190, 0.8);
+          }
         }
       }
     }
@@ -140,6 +157,7 @@ const FeaturedQuote = () => {
         </div>
 
         <img
+          className='theImage'
           src={require("../../../images/home/soren-bjerg.webp")}
           alt='Soren Bjerg'
         />

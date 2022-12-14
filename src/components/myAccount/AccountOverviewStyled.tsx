@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const AccountWrapper = styled.div`
-  padding: 80px 0px;
-  max-width: 1220px;
+  padding: 80px 30px;
+  max-width: 1280px;
   margin: auto;
   display: flex;
   gap: 32px;

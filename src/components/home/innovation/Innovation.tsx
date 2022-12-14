@@ -10,9 +10,10 @@ const InnovationStyled = styled.div`
   place-items: center;
   background-size: cover;
   background-position: center;
+  padding: 0px 32px;
   .contentWrapper {
     width: 100%;
-    max-width: 1220px;
+    max-width: 1280px;
     .article {
       max-width: 300px;
       color: white;
@@ -51,12 +52,12 @@ const InnovationStyled = styled.div`
         margin-top: 20px;
         text-transform: uppercase;
         position: relative;
-        &::after{
-            content: "►";
-            /* position: absolute; */
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
-            margin-left: 8px;
+        &::after {
+          content: "►";
+          /* position: absolute; */
+          font-family: "Courier New", Courier, monospace;
+          font-size: 16px;
+          margin-left: 8px;
         }
         &:hover {
           /* background-color: var(--brand-color-dark); */

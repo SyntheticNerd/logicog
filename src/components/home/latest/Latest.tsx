@@ -9,9 +9,10 @@ const LatestStyled = styled.div`
   display: grid;
   place-items: center;
   background-size: cover;
+  padding: 0px 32px;
   .contentWrapper {
     width: 100%;
-    max-width: 1220px;
+    max-width: 1280px;
     .article {
         text-align: right;
         max-width: 390px;

@@ -3,8 +3,13 @@ import styled from "styled-components";
 export const HeroSlideShowStyled = styled.div`
   min-height: calc(100vh - 42px);
   max-width: 100vw;
+  @media (max-width: 1020px) {
+    min-height: 100vh;
+    height: 100vh;
+  }
 
   .scrollableArea {
+    height: 100%;
     position: absolute;
     display: flex;
     overflow-x: scroll;
@@ -13,8 +18,12 @@ export const HeroSlideShowStyled = styled.div`
     scroll-behavior: smooth;
   }
   .slide {
+    height: 100%;
     min-width: 100vw;
     flex-grow: 1;
+    & > div {
+      height: 100%;
+    }
   }
   .sides {
     transition: transform 0.8s cubic-bezier(0.76, 0.22, 0.28, 0.6);
@@ -79,7 +88,7 @@ export const HeroSlideShowStyled = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     padding: 32px;
-    
+
     & > div {
       height: 80%;
       width: 80%;

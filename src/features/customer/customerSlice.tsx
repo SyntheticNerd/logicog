@@ -110,7 +110,10 @@ export const customerSlice = createSlice({
       const { productInfo, styleId } = action.payload;
 
       const cartProductIndex = state.cart.items.findIndex((cp) => {
-        return cp.productInfo.productId.toString() === productInfo.productId.toString();
+        return (
+          cp.productInfo.productId.toString() ===
+          productInfo.productId.toString()
+        );
       });
 
       let newQuantity = 1;
@@ -151,10 +154,15 @@ export const customerSlice = createSlice({
         console.log("PRODUCT DOES NOT EXIST IN CART");
       } else if (newQuantity <= 0) {
         //filter out items that are not the item with 0 quantity
-        console.log("DELETEING");
+        console.log("DELETING");
         updatedCartItems = updatedCartItems.filter((cartItem) => {
-          console.log(cartItem.productInfo.productId.toString(), productId.toString());
-          return cartItem.productInfo.productId.toString() !== productId.toString();
+          console.log(
+            cartItem.productInfo.productId.toString(),
+            productId.toString()
+          );
+          return (
+            cartItem.productInfo.productId.toString() !== productId.toString()
+          );
         });
         console.log(updatedCartItems);
         const updatedCart = {

@@ -9,7 +9,8 @@ export const ProductDetailsStyled = styled.div`
     margin-top: 10%;
   }
   .contentWrapper {
-    max-width: 1220px;
+    max-width: 1280px;
+    padding: 32px;
     margin: auto;
   }
   .currentRoute {
@@ -30,20 +31,40 @@ export const ProductDetailsStyled = styled.div`
   .mainContent {
     display: flex;
     justify-content: space-between;
-
+    @media (max-width: 1100px) {
+      flex-direction: column;
+    }
     .slideShow {
       width: 50%;
       margin: 32px 0px;
+      height: 70vh;
+      @media (max-width: 1100px) {
+        width: 100%;
+      }
+      .slick-slider {
+        height: 80%;
+        .slick-list {
+          height: 100%;
+          .slick-track {
+            height: 100%;
+          }
+        }
+      }
       .slick-slide {
         border: none;
         outline: none;
         div {
           border: none;
           outline: none;
+          height: 100%;
+          img {
+            object-fit: contain;
+          }
         }
       }
       .slideWrapper {
         width: 100%;
+        height: 100%;
         display: flex !important;
         flex-direction: column;
         align-items: center;
@@ -56,13 +77,14 @@ export const ProductDetailsStyled = styled.div`
       }
       .slideNav {
         display: flex;
-        justify-content: space-between;
-        width: 80%;
+        justify-content: center;
+        gap: 2%;
+        width: 100%;
         margin: auto;
         margin-top: 32px;
         button {
-          height: 74px;
-          width: 74px;
+          height: min(15vw, 74px);
+          width: min(15vw, 74px);
           background: none;
           border: 2px solid rgba(255, 255, 255, 0.2);
           border-radius: 8px;
@@ -82,6 +104,9 @@ export const ProductDetailsStyled = styled.div`
     }
     .productInfo {
       width: 35%;
+      @media (max-width: 1100px) {
+        width: 100%;
+      }
       color: white;
       .series {
         background-color: white;

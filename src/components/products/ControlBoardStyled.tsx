@@ -4,16 +4,20 @@ import checkmark from "../../images/icons/checkmark.svg";
 export const ControlBoardStyled = styled.div`
   .controlBarWrapper {
     background-color: #f4f4f4;
+    padding: 0px 32px;
   }
   .bottom {
     display: flex;
     max-width: 1490px;
     margin: auto;
-    padding: 32px 0px;
+    padding: 32px 32px;
     gap: 32px;
     .productSection {
       display: flex;
       flex-grow: 1;
+      @media(max-width: 1040px){
+        flex-direction: column;
+      }
     }
   }
   .loadingWrapper {

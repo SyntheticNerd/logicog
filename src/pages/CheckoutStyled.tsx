@@ -14,7 +14,7 @@ export const CheckoutStyled = styled.div`
   .contentWrapper {
     display: flex;
     justify-content: space-between;
-    max-width: 1220px;
+    max-width: 1280px;
     margin: auto;
     margin-top: 80px;
     text-align: left;

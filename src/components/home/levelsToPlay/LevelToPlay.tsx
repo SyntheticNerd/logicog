@@ -3,9 +3,12 @@ import styled from "styled-components";
 
 const LevelsToPlayStyled = styled.div`
   background-image: url(${require("../../../images/home/feature-7-banner-desktop.webp")});
-  min-height: calc(100vh - 122px);
+  height: calc(100vh - 122px);
+  max-height: 1000px;
   display: grid;
   place-items: center;
+  background-size: cover;
+  background-position: center;
   .contentWrapper {
     max-width: 590px;
     color: white;

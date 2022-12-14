@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowIcon from "../../images/icons/ArrowIcon";
 import { Product } from "../../utils/types";
 import Loading from "../layout/Loading";
@@ -48,8 +48,63 @@ const filterList = [
 const ProductControlBoard = ({ products, loading }: Props) => {
   const [hideFilters, setHideFilters] = useState(false);
   const [sortBy, setSortBy] = useState("new");
+  const [filtered, setFiltered] = useState(products);
   const [appliedFilters, setAppliedFilters] = useState<String[]>([]);
   const [dropDown, setDropDown] = useState(false);
+
+  useEffect(() => {
+    const copy = [...products];
+    switch (sortBy) {
+      case "new":
+        setFiltered(products);
+        console.log(products);
+        console.log("new");
+        break;
+      case "price - low to high":
+        setFiltered(
+          copy.sort((a, b) => {
+            return +a.price - +b.price;
+          })
+        );
+        console.log("low to high");
+        break;
+      case "price - high to low":
+        setFiltered(
+          copy.sort((a, b) => {
+            return +b.price - +a.price;
+          })
+        );
+        console.log("high to low");
+        break;
+      case "name":
+        setFiltered(
+          copy.sort((a, b) => {
+            let fa = a.title.toLowerCase(),
+              fb = b.title.toLowerCase();
+
+            if (fa < fb) {
+              return -1;
+            }
+            if (fa > fb) {
+              return 1;
+            }
+            return 0;
+          })
+        );
+        console.log("name");
+        break;
+      case "best sellers":
+        console.log("best sellers");
+        break;
+      case "featured":
+        console.log("featured");
+        break;
+      default:
+        setFiltered(products);
+        console.log("default");
+        break;
+    }
+  }, [sortBy, products]);
 
   return (
     <ControlBoardStyled>
@@ -68,12 +123,12 @@ const ProductControlBoard = ({ products, loading }: Props) => {
                 <li onClick={() => setSortBy("price - low to high")}>
                   PRICE - LOW TO HIGH
                 </li>
-                <li onClick={() => setSortBy("price = high to low")}>
+                <li onClick={() => setSortBy("price - high to low")}>
                   PRICE - HIGH TO LOW
                 </li>
                 <li onClick={() => setSortBy("name")}>NAME</li>
-                <li onClick={() => setSortBy("best sellers")}>BEST SELLERS</li>
-                <li onClick={() => setSortBy("featured")}>FEATURED</li>
+                {/* <li onClick={() => setSortBy("best sellers")}>BEST SELLERS</li> */}
+                {/* <li onClick={() => setSortBy("featured")}>FEATURED</li> */}
               </ul>
             )}
           </SortDropDownStyled>
@@ -104,7 +159,7 @@ const ProductControlBoard = ({ products, loading }: Props) => {
           </div>
         ) : (
           <div className='productSection'>
-            {products.map((product) => (
+            {filtered.map((product) => (
               <ProductCard key={product._id.toString()} product={product} />
             ))}
           </div>

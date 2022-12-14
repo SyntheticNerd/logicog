@@ -3,9 +3,17 @@ import styled from "styled-components";
 
 export const ProductCardStyled = styled.div`
   width: 33.3%;
+  @media (max-width: 1040px) {
+    width: 100%;
+  }
   height: fit-content;
   padding: 8px;
+  a {
+    text-decoration: none;
+    color: black;
+  }
   .imageWrapper {
+    display: block;
     padding-top: 100%;
     position: relative;
     background-color: rgba(47, 49, 50, 0.1);

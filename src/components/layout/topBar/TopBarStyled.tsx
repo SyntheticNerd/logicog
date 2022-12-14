@@ -4,6 +4,9 @@ export const TopBarStyled = styled.nav`
   background-color: var(--top-bar-color);
   z-index: 7;
   position: relative;
+  @media (max-width: 1020px) {
+    display: none;
+  }
   * {
     color: white;
     font-size: 12px;

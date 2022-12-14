@@ -3,6 +3,7 @@ import image from "../../images/banners/myaccount-logitechg.webp";
 
 export const HeroStyled = styled.div`
   height: 55vh;
+  max-height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;

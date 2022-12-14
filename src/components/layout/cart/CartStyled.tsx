@@ -7,6 +7,12 @@ export const CartStyled = styled.div`
   z-index: 20;
   width: 100%;
   height: 100vh;
+  a {
+    color: var(--brand-color);
+  }
+  input {
+    margin-right: 8px;
+  }
   .backDrop {
     position: absolute;
     width: 100%;
@@ -17,6 +23,7 @@ export const CartStyled = styled.div`
   }
   .cart {
     width: 460px;
+    max-width: 80vw;
     height: 100vh;
     position: fixed;
     right: 0;

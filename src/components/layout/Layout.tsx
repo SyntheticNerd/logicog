@@ -18,7 +18,6 @@ const Layout = ({ children }: Props) => {
     (e: any) => {
       const window = e.currentTarget;
       if (y > window.scrollY) {
-        console.log("scrolling up");
         if (window.scrollY < 42) {
           dispatch(setTop(true));
         } else {
@@ -36,7 +35,6 @@ const Layout = ({ children }: Props) => {
           dispatch(setTop(false));
         }
         dispatch(closePeak(null));
-        console.log("scrolling down");
       }
       setY(window.scrollY);
     },
