@@ -12,13 +12,7 @@ const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const { category, productId } = useParams();
 
-  const categories = {
-    mice: true,
-    "gaming-mice": true,
-  };
-
   useEffect(() => {
-    console.log(category! in categories);
     window.scrollTo(0, 0);
     if (!productId) {
       setLoading(true);

@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MobileNavStyled, NavMenuStyled } from "./NavStyled";
 import { toggleNav } from "../../../features/ui/uiSlice";
-import { useAppDispatch } from "../../../features/store";
+import { useAppDispatch, useAppSelector } from "../../../features/store";
 import { motion } from "framer-motion";
+import AccountIcon from "../../../images/icons/AccountIcon";
+import GlobeIcon from "../../../images/icons/GlobeIcon";
+import {
+  isLoggedInState,
+  logout,
+} from "../../../features/customer/customerSlice";
 
 const menuItems = [
   {
@@ -59,6 +65,8 @@ const menuItems = [
 const NavMenu = () => {
   const dispatch = useAppDispatch();
   const [expandProduct, setExpandProduct] = useState(false);
+  const isLoggedIn = useAppSelector(isLoggedInState);
+
   return (
     <>
       {" "}
@@ -96,45 +104,68 @@ const NavMenu = () => {
             className='closeBtn'
             onClick={() => dispatch(toggleNav(null))}
           />
-          <button
-            className='expandableButton'
-            onClick={() => setExpandProduct((old) => !old)}
-          >
-            Products <span>►</span>
-          </button>
-          <div
-            className='listWrapper'
-            style={{
-              maxHeight: expandProduct ? "850px" : "0px",
-              opacity: expandProduct ? "1" : "0",
-            }}
-          >
-            {menuItems.map((item) => (
-              <Link
-                to={`products/${item.title.replace(/\s/g, "-").toLowerCase()}`}
-                onClick={() => dispatch(toggleNav(null))}
-              >
-                <p>{item.title}</p>
+          <div className='anotherWrapper'>
+            <button
+              className='expandableButton'
+              onClick={() => setExpandProduct((old) => !old)}
+            >
+              Products <span>►</span>
+            </button>
+            <div
+              className='listWrapper'
+              style={{
+                maxHeight: expandProduct ? "450px" : "0px",
+                minHeight: expandProduct ? "450px" : "0px",
+                opacity: expandProduct ? "1" : "0",
+              }}
+            >
+              {menuItems.map((item) => (
+                <Link
+                  to={`products/${item.title
+                    .replace(/\s/g, "-")
+                    .toLowerCase()}`}
+                  onClick={() => dispatch(toggleNav(null))}
+                >
+                  <p>{item.title}</p>
 
-                <img
-                  src={require(`../../../images/navigation/${item.image}`)}
-                  alt={item.title}
-                />
-              </Link>
-            ))}
+                  <img
+                    src={require(`../../../images/navigation/${item.image}`)}
+                    alt={item.title}
+                  />
+                </Link>
+              ))}
+            </div>
+            <div className='icon-container'>
+              EN
+              <GlobeIcon />
+            </div>
+            <Link to='my-account' className='icon-container expandableButton'>
+              MY ACCOUNT <AccountIcon />
+            </Link>
+
+            <Link to='/' className='expandableButton'>
+              logicog
+            </Link>
+            <a href='' className='expandableButton'>
+              Synthetic Nation
+            </a>
+            <a href='' className='expandableButton'>
+              Synthetic Nerd
+            </a>
+            <a href='' className='expandableButton'>
+              Lantern Loft
+            </a>
+            {isLoggedIn && (
+              <>
+                <button
+                  className='icon-container logoutBtn'
+                  onClick={() => dispatch(logout(null))}
+                >
+                  LOG OUT
+                </button>
+              </>
+            )}
           </div>
-          <Link to='/' className='expandableButton'>
-            logicog
-          </Link>
-          <a href='' className='expandableButton'>
-            Synthetic Nation
-          </a>
-          <a href='' className='expandableButton'>
-            Synthetic Nerd
-          </a>
-          <a href='' className='expandableButton'>
-            Lantern Loft
-          </a>
         </motion.div>
       </MobileNavStyled>
     </>

@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addProductToCartApi,
+  addProductToWishListApi,
   changeQuantityApi,
   checkoutApi,
   logoutApi,
+  refundTransactionApi,
+  removeProductFromWishListApi,
 } from "../../utils/apiHelpers";
 import { RootState } from "../store";
 
@@ -14,6 +17,9 @@ interface CustomerState {
   cart: {
     items: { productInfo: any; styleId: any; quantity: number; _id?: any }[];
   };
+  wishList: {
+    items: { productInfo: any; styleId: any; _id?: any }[];
+  };
   transactions: any[];
   isLoggedIn: Boolean;
 }
@@ -23,6 +29,7 @@ const initialState: CustomerState = {
   lastName: "",
   email: "",
   cart: { items: [] },
+  wishList: { items: [] },
   transactions: [],
   isLoggedIn: false,
 };
@@ -108,7 +115,7 @@ export const customerSlice = createSlice({
     },
     addProductToCart: (state, action) => {
       const { productInfo, styleId } = action.payload;
-
+      console.log(state.cart.items);
       const cartProductIndex = state.cart.items.findIndex((cp) => {
         return (
           cp.productInfo.productId.toString() ===
@@ -186,6 +193,96 @@ export const customerSlice = createSlice({
           .catch((err) => console.log("COULD NOT UPDATE QUANTITY"));
       }
     },
+    addProductToWishList: (state, action) => {
+      const { productInfo, styleId } = action.payload;
+      console.log(state.wishList.items);
+      const wishListProductIndex = state.wishList.items.findIndex((cp) => {
+        return (
+          cp.productInfo.productId.toString() ===
+          productInfo.productId.toString()
+        );
+      });
+
+      const updatedWishListItems = [...state.wishList.items];
+      if (wishListProductIndex >= 0) {
+        return;
+      } else {
+        updatedWishListItems.push({
+          productInfo: productInfo,
+          styleId: styleId,
+        });
+      }
+      const updatedWishList = {
+        items: updatedWishListItems,
+      };
+      state.wishList = updatedWishList;
+      console.log("UPDATED CART in Redux", state.wishList);
+      if (state.isLoggedIn) {
+        addProductToWishListApi(productInfo, styleId)
+          .then((res) => console.log(res))
+          .catch((err) => console.log("ERROR", err));
+      }
+    },
+    removeProductFromWishList: (state, action) => {
+      const productId = action.payload;
+      console.log(productId);
+      //find item in cart
+      const wishListProductIndex = state.wishList.items.findIndex((cp) => {
+        return cp.productInfo.productId.toString() === productId.toString();
+      });
+
+      console.log(wishListProductIndex);
+
+      let updatedCartItems = [...state.wishList.items];
+      if (wishListProductIndex === undefined || wishListProductIndex === null) {
+        console.log("PRODUCT DOES NOT EXIST IN CART");
+      } else {
+        //filter out items that are not the item with 0 quantity
+        console.log("DELETING");
+        updatedCartItems = updatedCartItems.filter((wishListItem) => {
+          console.log(
+            wishListItem.productInfo.productId.toString(),
+            productId.toString()
+          );
+          return (
+            wishListItem.productInfo.productId.toString() !==
+            productId.toString()
+          );
+        });
+        console.log(updatedCartItems);
+        const updatedCart = {
+          items: updatedCartItems,
+        };
+        state.wishList = updatedCart;
+        console.log("UPDATED WISHLIST", state.wishList);
+      }
+
+      if (state.isLoggedIn) {
+        removeProductFromWishListApi(productId)
+          .then((res) => console.log(res))
+          .catch((err) => console.log("COULD NOT REMOVE PRODUCT"));
+      }
+    },
+    refundTransaction: (state, action) => {
+      const transactionId = action.payload;
+      const transactionIndex = state.transactions.findIndex((cp) => {
+        return cp._id.toString() === transactionId.toString();
+      });
+      console.log(transactionIndex);
+      let updatedTransaction = [...state.transactions];
+      if (transactionIndex === undefined || transactionIndex === null) {
+        console.log("Can not find Transaction");
+      } else {
+        updatedTransaction[transactionIndex].refunded = true;
+        state.transactions = updatedTransaction;
+        console.log("UPDATED TRANSACTION", state.transactions);
+      }
+      if (state.isLoggedIn) {
+        refundTransactionApi(transactionId)
+          .then((res) => console.log(res))
+          .catch((err) => console.log("COULD NOT REFUND"));
+      }
+    },
   },
 
   extraReducers: (builder) => {
@@ -220,8 +317,16 @@ export const customerSlice = createSlice({
 
 export default customerSlice.reducer;
 
-export const { changeQuantity, addProductToCart, logout } =
-  customerSlice.actions;
+export const {
+  changeQuantity,
+  addProductToCart,
+  logout,
+  addProductToWishList,
+  removeProductFromWishList,
+  refundTransaction,
+} = customerSlice.actions;
 export const customerState = (state: RootState) => state.customer;
 export const cartState = (state: RootState) => state.customer.cart.items;
+export const wishListState = (state: RootState) =>
+  state.customer.wishList.items;
 export const isLoggedInState = (state: RootState) => state.customer.isLoggedIn;

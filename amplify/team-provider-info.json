@@ -15,11 +15,11 @@
       "function": {
         "logicogCustomerHandler": {
           "deploymentBucketName": "amplify-logicog-dev-150506-deployment",
-          "s3Key": "amplify-builds/logicogCustomerHandler-4361684b30566553736f-build.zip"
+          "s3Key": "amplify-builds/logicogCustomerHandler-6c5739574e5045756f4d-build.zip"
         },
         "logicogProductHandler": {
           "deploymentBucketName": "amplify-logicog-dev-150506-deployment",
-          "s3Key": "amplify-builds/logicogProductHandler-56343578693154315153-build.zip"
+          "s3Key": "amplify-builds/logicogProductHandler-6361786844495a434336-build.zip"
         }
       },
       "api": {

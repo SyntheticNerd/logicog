@@ -14,6 +14,7 @@ const StandardArticleStyled = styled.div<{ backgroundImage?: string }>`
   max-height: 800px;
   display: grid;
   place-items: center;
+  overflow: hidden;
   .contentWrapper {
     display: flex;
     align-items: center;
@@ -83,18 +84,34 @@ const StandardArticle = ({
       <div className='contentWrapper'>
         <img src={image} alt='' />
         <div ref={ref} className='article'>
-          <h2>{title}</h2>
+          <motion.h2
+            animate={{
+              transform: inView ? "translateX(0px)" : "translateX(2000px)",
+              opacity: inView ? "1" : "0",
+            }}
+            transition={{ delay: 0.5, type: "just" }}
+          >
+            {title}
+          </motion.h2>
           <div className='miniHr'>
             <motion.div
               animate={{
                 width: inView ? "86px" : "100%",
                 opacity: inView ? "1" : "0",
               }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.5, type: "just" }}
               className='after'
             />
           </div>
-          <p>{article}</p>
+          <motion.p
+            animate={{
+              transform: inView ? "translateX(0px)" : "translateX(2000px)",
+              opacity: inView ? "1" : "0",
+            }}
+            transition={{ delay: 0.5, type: "just" }}
+          >
+            {article}
+          </motion.p>
           <a href={link}>{button}</a>
         </div>
       </div>

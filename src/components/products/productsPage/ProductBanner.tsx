@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BannerStyled } from "./ProductsPageStyled";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { JsxElement } from "typescript";
+import { useLocation } from "react-router";
+import { set } from "immer/dist/internal";
 
 interface FileNameMap {
   [key: string]: { excerpt: any; fileName: string; mobileFileName?: string };
@@ -80,6 +82,22 @@ const bannerFileNames: FileNameMap = {
 };
 
 const ProductBanner = ({ category }: { category?: string }) => {
+  const controls1 = useAnimation();
+  const controls2 = useAnimation();
+  const controls3 = useAnimation();
+  const location = useLocation();
+  const [trigger, setTrigger] = useState(false);
+  const [to, setTo] = useState<NodeJS.Timeout>();
+
+  useEffect(() => {
+    setTrigger(false);
+    const _to = setTimeout(() => {
+      setTrigger(true);
+    }, 500);
+    setTo(_to);
+    return clearTimeout(to);
+  }, [location]);
+
   return (
     <BannerStyled
       backgroundImageFileName={
@@ -92,19 +110,39 @@ const ProductBanner = ({ category }: { category?: string }) => {
       }
       category={category ? category : ""}
     >
-      <div className='contentWrapper'>
-        <div className='grid'>
-          <h1>{category && category.replace(/-/g, " ").toUpperCase()}</h1>
-          <div className='miniHr'>
-            <motion.div
-              animate={{ width: "86px" }}
-              transition={{ delay: 0.5 }}
-              className='after'
-            ></motion.div>
+      <AnimatePresence>
+        {trigger && (
+          <div className='contentWrapper'>
+            <div className='grid'>
+              <motion.h1
+                initial={{ transform: "translateX(2000px)" }}
+                animate={{ transform: "translateX(0px)" }}
+                // exit={{ transform: "translateX(-2000px)" }}
+                transition={{ delay: 0.5 }}
+              >
+                {category && category.replace(/-/g, " ").toUpperCase()}
+              </motion.h1>
+              <div className='miniHr'>
+                <motion.div
+                  initial={{ width: "100%" }}
+                  animate={{ width: "86px" }}
+                  // exit={{ width: "0px" }}
+                  transition={{ delay: 0.5 }}
+                  className='after'
+                ></motion.div>
+              </div>
+              <motion.p
+                initial={{ transform: "translateX(2000px)" }}
+                animate={{ transform: "translateX(0px)" }}
+                // exit={{ transform: "translateX(-2000px)" }}
+                transition={{ delay: 0.5 }}
+              >
+                {category && bannerFileNames[category].excerpt}
+              </motion.p>
+            </div>
           </div>
-          <p>{category && bannerFileNames[category].excerpt}</p>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
     </BannerStyled>
   );
 };

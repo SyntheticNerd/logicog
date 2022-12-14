@@ -46,6 +46,31 @@ const customerSchema = new Schema({
       },
     ],
   },
+  wishList: {
+    items: [
+      {
+        productInfo: {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          },
+          productName: {
+            type: String,
+            required: true,
+          },
+          productImage: {
+            type: String,
+            required: true,
+          },
+        },
+        styleId: {
+          type: Schema.Types.ObjectId,
+          required: true,
+        },
+      },
+    ],
+  },
   transactions: [
     {
       items: [
@@ -106,6 +131,38 @@ customerSchema.methods.addToCart = function (productInfo, styleId) {
   return this.save();
 };
 
+customerSchema.methods.changeQuantity = function (productId, newQuantity) {
+  //find item in cart
+  const cartProductIndex = this.cart.items.findIndex((cp) => {
+    return cp.productInfo.productId.toString() === productId.toString();
+  });
+  console.log(cartProductIndex);
+  let updatedCartItems = [...this.cart.items];
+  if (cartProductIndex === undefined || cartProductIndex === null) {
+    return new Error("Can not find item in cart");
+  } else if (newQuantity <= 0) {
+    //filter out items that are not the item with 0 quantity
+    updatedCartItems = updatedCartItems.filter(
+      (cartItem) =>
+        cartItem.productInfo.productId.toString() !== productId.toString()
+    );
+    const updatedCart = {
+      items: updatedCartItems,
+    };
+    this.cart = updatedCart;
+    console.log("UPDATED CART", this.cart);
+    return this.save();
+  } else {
+    updatedCartItems[cartProductIndex].quantity = newQuantity;
+    const updatedCart = {
+      items: updatedCartItems,
+    };
+    this.cart = updatedCart;
+    console.log("UPDATED CART", this.cart);
+    return this.save();
+  }
+};
+
 //TODO Definitely want to rethink the multiple lambda functions or we need to pass prices to the cart items at creation
 customerSchema.methods.checkout = function (total) {
   const updatedTransactions = [...this.transactions];
@@ -122,33 +179,66 @@ customerSchema.methods.checkout = function (total) {
   return this.save();
 };
 
-customerSchema.methods.changeQuantity = function (productId, newQuantity) {
-  //find item in cart
-  const cartProductIndex = this.cart.items.findIndex((cp) => {
+customerSchema.methods.addToWishList = function (productInfo, styleId) {
+  const wishListProductIndex = this.wishList.items.findIndex((cp) => {
+    return (
+      cp.productInfo.productId.toString() === productInfo.productId.toString()
+    );
+  });
+  let newQuantity = 1;
+  const updatedWishListItems = [...this.wishList.items];
+  if (wishListProductIndex >= 0) {
+    return;
+  } else {
+    updatedWishListItems.push({
+      productInfo: productInfo,
+      styleId: styleId,
+    });
+  }
+  const updatedWishList = {
+    items: updatedWishListItems,
+  };
+  this.wishList = updatedWishList;
+  console.log("UPDATED WISHLIST", this.wishList);
+  return this.save();
+};
+
+customerSchema.methods.removeFromWishList = function (productId) {
+  const wishListProductIndex = this.wishList.items.findIndex((cp) => {
     return cp.productInfo.productId.toString() === productId.toString();
   });
-  console.log(cartProductIndex);
-  let updatedCartItems = [...this.cart.items];
-  if (cartProductIndex === undefined || cartProductIndex === null) {
-    return new Error("Can not find item in cart");
-  } else if (newQuantity <= 0) {
-    //filter out items that are not the item with 0 quantity
-    updatedCartItems = updatedCartItems.filter(
-      (cartItem) => cartItem.productInfo.productId.toString() !== productId.toString()
-    );
-    const updatedCart = {
-      items: updatedCartItems,
-    };
-    this.cart = updatedCart;
-    console.log("UPDATED CART", this.cart);
-    return this.save();
+  console.log(wishListProductIndex);
+  let updatedWishListItems = [...this.wishList.items];
+  if (wishListProductIndex === undefined || wishListProductIndex === null) {
+    return new Error("Can not find item in wishList");
   } else {
-    updatedCartItems[cartProductIndex].quantity = newQuantity;
-    const updatedCart = {
-      items: updatedCartItems,
+    //filter out items that are not the item with 0 quantity
+    updatedWishListItems = updatedWishListItems.filter(
+      (wishListItem) =>
+        wishListItem.productInfo.productId.toString() !== productId.toString()
+    );
+    const updatedWishList = {
+      items: updatedWishListItems,
     };
-    this.cart = updatedCart;
-    console.log("UPDATED CART", this.cart);
+    this.wishList = updatedWishList;
+    console.log("UPDATED CART", this.wishList);
+    return this.save();
+  }
+};
+//TODO add refund date
+customerSchema.methods.refundTransaction = function (transactionId) {
+  const transactionIndex = this.transactions.findIndex((cp) => {
+    return cp._id.toString() === transactionId.toString();
+  });
+  console.log(transactionIndex);
+  let updatedTransaction = [...this.transactions];
+  if (transactionIndex === undefined || transactionIndex === null) {
+    return new Error("Can not find Transaction");
+  } else {
+    updatedTransaction[transactionIndex].refunded = true;
+
+    this.transactions = updatedTransaction;
+    console.log("UPDATED TRANSACTION", this.transactions);
     return this.save();
   }
 };

@@ -15,6 +15,7 @@ import Loading from "../../layout/Loading";
 const bgColors: { [key: string]: string } = {
   "gaming-mice": "#251462",
   "gaming-mouse-pads": "#7c7c7c",
+  "gaming-keyboards": "#5b7e61",
 };
 
 const ProductDetails = () => {
@@ -67,13 +68,26 @@ const ProductDetails = () => {
   };
 
   return (
-    <ProductDetailsStyled style={{ backgroundColor: `${bgColors[category!]}` }}>
+    <ProductDetailsStyled
+      style={{
+        backgroundColor: product
+          ? `${bgColors[product!.category]}`
+          : bgColors[category!]
+          ? `${bgColors[category!]}`
+          : `#3b3b3b`,
+      }}
+    >
       {product && !loading ? (
         <div className='contentWrapper'>
           <p className='currentRoute'>
             <Link to='/products'>products</Link>/
-            <Link to={`/products/${category}`}>{category}</Link>/
-            <Link to={`/products/${category}/${productId}`}>{productId}</Link>
+            <Link to={`/products/${product!.category}`}>
+              {product!.category}
+            </Link>
+            /
+            <Link to={`/products/${product!.category}/${productId}`}>
+              {productId}
+            </Link>
           </p>
           <div className='mainContent'>
             <div className='slideShow'>

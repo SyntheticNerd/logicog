@@ -267,6 +267,70 @@ app.post("/customers/checkout", async (req, res) => {
   }
 });
 
+app.post("/customers/add-to-wishList", async function (req, res) {
+  const prodInfo = req.body.productInfo;
+  const styleId = req.body.styleId;
+  //at this point pray we have proper session data
+  console.log("CUSTOMER", req.customer);
+  console.log("SESSION", req.session);
+  //have to return or else we get a unhandled promise rejection
+
+  try {
+    const response = await req.customer.addToWishList(prodInfo, styleId);
+    console.log("Past addToWishList", res);
+    req.session.customer = req.customer;
+    store.set(req.body.sid, req.session);
+    req.session.destroy();
+    return res.json({
+      success: "Added item to wishlist",
+      productInfo: prodInfo,
+      response: response,
+      customer: req.customer,
+    });
+  } catch (err) {
+    console.log("Error", err);
+    return res.json({ error: "Could not add to wishlist." });
+  }
+});
+
+app.post("/customers/remove-from-wishList", async (req, res) => {
+  const { productId } = req.body;
+  try {
+    const response = await req.customer.removeFromWishList(productId);
+    req.session.customer = req.customer;
+    store.set(req.body.sid, req.session);
+    req.session.destroy();
+    return res.json({
+      success: "Updated Wishlist",
+      productId: productId,
+      response: response,
+      customer: req.customer,
+    });
+  } catch (err) {
+    console.log("Error", err);
+    return res.json({ error: "Could not update." });
+  }
+});
+
+app.post("/customers/refund-transaction", async (req, res) => {
+  const { transactionId } = req.body;
+  try {
+    const response = await req.customer.refundTransaction(transactionId);
+    req.session.customer = req.customer;
+    store.set(req.body.sid, req.session);
+    req.session.destroy();
+    return res.json({
+      success: "Updated Transaction",
+      transactionId: transactionId,
+      response: response,
+      customer: req.customer,
+    });
+  } catch (err) {
+    console.log("Error", err);
+    return res.json({ error: "Could not refund." });
+  }
+});
+
 app.listen(3000, function () {
   console.log("App starting");
 });

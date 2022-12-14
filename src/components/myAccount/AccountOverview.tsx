@@ -28,6 +28,7 @@ const overviewOptions = [
     description:
       "Register your product and find all the information you need to get started.",
     links: [
+      { name: "my wishlist", link: "wish-list" },
       { name: "register a product", link: "create-product" },
       { name: "downloads", link: "downloads" },
     ],

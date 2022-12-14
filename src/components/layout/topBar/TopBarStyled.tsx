@@ -11,6 +11,9 @@ export const TopBarStyled = styled.nav`
     color: white;
     font-size: 12px;
   }
+  svg {
+    fill: white;
+  }
   a {
     opacity: 50%;
     text-decoration: none;
@@ -49,6 +52,7 @@ export const TopBarStyled = styled.nav`
     }
     svg {
       height: 1rem;
+      fill: white;
     }
   }
 `;

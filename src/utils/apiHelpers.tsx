@@ -263,3 +263,83 @@ export const checkoutApi = async (total: number) => {
     );
   }
 };
+
+export const addProductToWishListApi = async (
+  prodInfo: any,
+  styleId: String
+) => {
+  const sid = localStorage.getItem("sid");
+  if (sid) {
+    const res = await fetch(
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/add-to-wishList",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: sid,
+          productInfo: prodInfo,
+          styleId: styleId,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } else {
+    console.log("Store wishlist in redux until user creates account");
+  }
+};
+
+export const removeProductFromWishListApi = async (prodId: any) => {
+  const sid = localStorage.getItem("sid");
+  console.log(prodId);
+  if (sid) {
+    const res = await fetch(
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/remove-from-wishList",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: sid,
+          productId: prodId,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+
+    return data;
+  } else {
+    console.log("Store wishlist in redux until user creates account");
+  }
+};
+
+export const refundTransactionApi = async (transactionId: any) => {
+  const sid = localStorage.getItem("sid");
+  console.log(transactionId);
+  if (sid) {
+    const res = await fetch(
+      "https://13713ult3b.execute-api.us-west-1.amazonaws.com/dev/customers/refund-transaction",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: sid,
+          transactionId: transactionId,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+
+    return data;
+  } else {
+    console.log("Can not perform refunds unless user has account yet");
+  }
+};

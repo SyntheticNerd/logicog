@@ -45,4 +45,17 @@ export const MyOrdersStyled = styled.div`
       background: none;
     }
   }
+  .refunded {
+    width: 100%;
+    text-align: center;
+    padding: 14px 0px;
+    margin-top: 16px;
+    background-color: #5f975d;
+    border: 2px solid #5f975d;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+    outline: none;
+    border-radius: 4px;
+  }
 `;

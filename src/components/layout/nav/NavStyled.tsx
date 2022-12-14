@@ -71,6 +71,8 @@ export const NavMenuStyled = styled(motion.div)`
   top: 0;
   background-color: #f4f4f4;
   z-index: 4;
+  overflow-y: scroll;
+  padding-bottom: 80px;
   @media (max-width: 1000px) {
     display: none;
   }
@@ -113,7 +115,7 @@ export const MobileNavStyled = styled(motion.div)`
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     top: 0;
     left: 0;
   }
@@ -125,7 +127,16 @@ export const MobileNavStyled = styled(motion.div)`
     display: flex;
     flex-direction: column;
     position: relative;
+
+    .anotherWrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: scroll;
+    }
   }
+
   .expandableButton {
     background: none;
     border: none;
@@ -142,7 +153,7 @@ export const MobileNavStyled = styled(motion.div)`
     flex-direction: column;
     gap: 16px;
     overflow-y: scroll;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     border-left: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
@@ -201,5 +212,25 @@ export const MobileNavStyled = styled(motion.div)`
       position: absolute;
       transform: rotate(-45deg);
     }
+  }
+  .icon-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 16px;
+    font-weight: bold;
+    font-size: 16px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid lightgray;
+    justify-content: space-between;
+    svg {
+      height: 20px;
+      fill: black;
+    }
+  }
+  .logoutBtn {
+    border-top: 1px solid lightgray;
+    margin-top: auto;
   }
 `;

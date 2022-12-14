@@ -58,32 +58,56 @@ export const ProductCardStyled = styled.div`
       display: flex;
       flex-direction: column;
       gap: 16px;
+      width: 100%;
       b {
         font-size: 20px;
       }
-      > button {
-        background: none;
-        background-color: var(--brand-color);
-        padding: 8px 16px;
-        width: fit-content;
-        border-radius: 4px;
-        border: none;
-        font-weight: bold;
+      .buttonWrapper {
         display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s;
-        border: 3px solid var(--brand-color);
-        svg {
-          width: 1.5em;
-          stroke: black;
+        justify-content: space-between;
+        > button {
+          background: none;
+          background-color: var(--brand-color);
+          padding: 8px 16px;
+          width: fit-content;
+          border-radius: 4px;
+          border: none;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.2s;
+          border: 3px solid var(--brand-color);
+          svg {
+            width: 1.5em;
+            stroke: black;
+          }
         }
-      }
-      > button:hover {
-        background-color: white;
-        color: var(--brand-color);
-        svg {
-          stroke: var(--brand-color);
+        > button:hover {
+          background-color: white;
+          color: var(--brand-color);
+          svg {
+            stroke: var(--brand-color);
+          }
+        }
+        .wishListBtn {
+          background: none;
+          border: none;
+          svg {
+            width: 3em;
+            stroke: var(--brand-color);
+            stroke-width: 3px;
+          }
+        }
+        .wishListBtnActive {
+          background: none;
+          border: none;
+          svg {
+            width: 3em;
+            fill: var(--brand-color);
+            stroke: var(--brand-color);
+            stroke-width: 3px;
+          }
         }
       }
     }
